@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Main autoloader
+ *
+ * Replaces namespaces and underscores with folders.
+ * The files can be located in these four folders : core, controllers, models, drivers
+ *
+ * Examples : Class name -> Called file
+ *  - \Foo\Bar -> /{folder}/Foo/Bar.php
+ *  - \Foo\Bar_Foo -> /{folder}/Foo/Bar/Foo.php
+ *  - FooBar -> /{folder}/FooBar.php
+ *  - Foo_Bar -> /{folder}/Foo/Bar.php
+ */
+spl_autoload_register(function($class){
+    $folders = ['core', 'controllers', 'models', 'drivers'];
+    $class = str_replace(['_', '\\'], '/', $class);
+    foreach ($folders as $folder) {
+        $file = implode('/', [
+            ROOT,
+            $folder,
+            $class . '.php'
+        ]);
+        if (file_exists($file)) {
+            include_once $file;
+            return;
+        }
+    }
+});
