@@ -37,10 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
  * @license  Revised BSD
  */
 
+namespace               ForceUTF8;
+
 /**
  * Class Encoding
  */
-class Encoding {
+class                   Encoding {
 
     const ICONV_TRANSLIT = "TRANSLIT";
     const ICONV_IGNORE = "IGNORE";
