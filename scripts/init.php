@@ -32,7 +32,8 @@ foreach ($confToLoad as $file)
     include $file;
 \Core\Conf::load(ROOT.'/config/global.json');
 
-\Core\Conf::set('inspector.startTime', microtime(true));
+if (\Core\Conf::get('debug'))
+    \Core\Conf::set('inspector.startTime', microtime(true));
 
 if (\Core\Conf::get('debug', false)) {
     ini_set('display_errors',1);
