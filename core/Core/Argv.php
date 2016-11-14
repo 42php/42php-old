@@ -105,7 +105,8 @@ class 							Argv {
                             'params' => $res['params'],
                             'name' => $name
                         ),
-                        'offset' => $offset
+                        'offset' => $offset,
+                        'conf' => $r
                     ];
                 }
             }
