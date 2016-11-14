@@ -3,11 +3,15 @@
 namespace                       Core;
 
 /**
+ * Gère les URLs et le routing.
+ *
  * Class Argv
+ * @package Core
  */
 class 							Argv {
     /**
      * Lit l'URL pour en extraire les paramètres.
+     *
      * @param string $url   URL à traiter
      * @param int $offset   Nombre d'éléments à ignorer au début
      *
@@ -27,7 +31,8 @@ class 							Argv {
     }
 
     /**
-     * Teste si la route matche l'URL fournie
+     * Teste si la route matche l'URL fournie.
+     *
      * @param string $url      URL courante
      * @param string $route    Route à tester
      *

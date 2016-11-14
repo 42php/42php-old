@@ -1,0 +1,208 @@
+<?php
+
+namespace                       Core;
+
+/**
+ * Permet à une classe de stocker et modifier des données façon objet textuel, ex: Obj::get('arr.var')
+ *
+ * Trait ConfData
+ * @package Core
+ */
+trait                           ConfData {
+    /**
+     * @var array $__data       Données à stocker
+     */
+    public static 				$__data = [];
+
+    /**
+     * Permet de lire une valeur
+     *
+     * @param string $var         Variable à retourner
+     * @param bool $default       Contenu par défaut à retourner si la variable n'est pas trouvée
+     * @param null|string $expect Permet de retourner la variable que si elle matche
+     *
+     * @return mixed              Le texte à retourner ou la variable par défaut
+     */
+    public static function 		get($var, $default = false, $expect = null, $forceData = false) {
+        if (is_string($expect) && !in_array(substr($expect, 0, 1), ['/', '#']))
+            $expect = '/'.preg_quote($expect, '/').'/';
+        if ($var == '')
+            return $default;
+        $els = explode('.', $var);
+        $current = $forceData ? $forceData : self::$__data;
+        $l = sizeof($els) - 1;
+        foreach ($els as $i => $el) {
+            if ($i < $l) {
+                if (isset($current[$el]))
+                    $current = $current[$el];
+                else {
+                    if (is_array($current) && !ArrayTools::isAssoc($current)) {
+                        $newVar = [];
+                        foreach ($els as $j => $e)
+                            if ($j >= $i)
+                                $newVar[] = $e;
+                        foreach ($current as $a) {
+                            $ret = self::get(implode('.', $newVar), null, $expect, $a);
+                            if (!is_null($ret) && (is_null($expect) || preg_match($expect, $ret)))
+                                return $ret;
+                        }
+                        return $default;
+                    } else
+                        return $default;
+                }
+            } else {
+                if (isset($current[$el]) && (($expect && preg_match($expect, $current[$el])) || is_null($expect)))
+                    return $current[$el];
+                else {
+                    if (is_array($current) && !ArrayTools::isAssoc($current)) {
+                        $newVar = [];
+                        foreach ($els as $j => $e)
+                            if ($j >= $i)
+                                $newVar[] = $e;
+                        foreach ($current as $a) {
+                            $ret = self::get(implode('.', $newVar), null, $expect, $a);
+                            if (!is_null($ret) && (is_null($expect) || preg_match($expect, $ret)))
+                                return $ret;
+                        }
+                        return $default;
+                    } else
+                        return $default;
+                }
+            }
+        }
+        return $default;
+    }
+
+    /**
+     * Permet de stocker des données de façon récursive.
+     *
+     * @param array $keys   Clés restantes
+     * @param mixed $value  Valeur
+     * @param array $data   Tableau des données
+     *
+     * @return mixed        Le tableau des données construit
+     */
+    private static function 	recursiveSet($keys, $value, $data) {
+        $insertValue = sizeof($keys) == 1;
+        $key = array_shift($keys);
+
+        if ($insertValue) {
+            $data[$key] = $value;
+            return $data;
+        }
+        $data[$key] = self::recursiveSet($keys, $value, isset($data[$key]) ? $data[$key] : []);
+
+        return $data;
+    }
+
+    /**
+     * Permet de stocker une valeur
+     *
+     * @param string $k            Clé
+     * @param mixed $v            Valeur
+     */
+    public static function 		set($k, $v) {
+        $k = explode('.', $k);
+        self::$__data = self::recursiveSet($k, $v, self::$__data);
+    }
+
+    /**
+     * Permet d'ajouter une valeur à un tableau stocké de façon récursive.
+     *
+     * @param array $keys         Clés restantes
+     * @param mixed $value        Valeur à ajouter
+     * @param array $data         Tableau des données
+     *
+     * @return mixed        Le tableau des données construit
+     */
+    private static function 	recursiveAppend($keys, $value, $data) {
+        $insertValue = sizeof($keys) == 1;
+        $key = array_shift($keys);
+
+        if ($insertValue) {
+            if (!isset($data[$key]))
+                $data[$key] = [];
+            $data[$key][] = $value;
+            return $data;
+        }
+        $data[$key] = self::recursiveAppend($keys, $value, isset($data[$key]) ? $data[$key] : []);
+
+        return $data;
+    }
+
+    /**
+     * Permet d'ajouter une entrée à un tableau stocké
+     *
+     * @param string $k     Clé
+     * @param mixed $v      Valeur
+     */
+    public static function 		append($k, $v) {
+        $k = explode('.', $k);
+        self::$__data = self::recursiveAppend($k, $v, self::$__data);
+    }
+
+    /**
+     * Permet de supprimer une valeur de façon récursive
+     *
+     * @param array $keys   Clés restantes
+     * @param array $data   Tableau de données
+     *
+     * @return mixed        Le tableau de données construit
+     */
+    private static function 	recursiveRemove($keys, $data) {
+        $insertValue = sizeof($keys) == 1;
+        $key = array_shift($keys);
+
+        if ($insertValue) {
+            unset($data[$key]);
+            return $data;
+        }
+        $data[$key] = self::recursiveRemove($keys, isset($data[$key]) ? $data[$key] : []);
+
+        return $data;
+    }
+
+    /**
+     * Retourne la taille d'un tableau stocké
+     *
+     * @param string $k     Clé
+     *
+     * @return int          La taille du tableau
+     */
+    public static function      size($k) {
+        $el = self::get($k, []);
+        if (!is_array($el))
+            return 0;
+        return sizeof($el);
+    }
+
+    /**
+     * Permet de supprimer une valeur dans les données stockées
+     *
+     * @param string $k     Clé
+     */
+    public static function 		remove($k) {
+        $k = explode('.', $k);
+        self::$__data = self::recursiveRemove($k, self::$__data);
+    }
+
+    /**
+     * Appelle un callback pour chaque clé et valeur
+     *
+     * @param callable $callback    Fonction de rappel. Doit comporter deux paramètres, pour respectivement la clé et la valeur
+     * @param bool $prefix          Préfixe à utiliser
+     * @param null $data            Force l'utilisation d'un tableau spécifique en lieu et place du tableau interne
+     */
+    public static function 		values($callback, $prefix = false, $data = null) {
+        if (is_null($data))
+            $data = self::$__data;
+
+        foreach ($data as $k => $v) {
+            if (is_array($v)) {
+                self::values($callback, ($prefix ? $prefix.'.' : '').$k, $v);
+            }
+            else
+                $callback(($prefix ? $prefix.'.' : '').$k, $v);
+        }
+    }
+}

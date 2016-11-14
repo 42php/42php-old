@@ -1,0 +1,29 @@
+<?php
+
+namespace                       Core;
+
+/**
+ * Gère la configuration globale de l'application.
+ *
+ * Class Conf
+ * @package Core
+ */
+class 							Conf {
+    use ConfData;
+
+    /**
+     * Charge la configuration.
+     *
+     * @param string $file      Chemin du fichier de configuration.
+     *
+     * @return bool             TRUE si la configuration a bien été chargée, sinon FALSE.
+     */
+    public static function 		load($file) {
+        if (!file_exists($file))
+            return false;
+
+        self::$__data = array_merge(self::$__data, json_decode(file_get_contents($file), true));
+
+        return true;
+    }
+}

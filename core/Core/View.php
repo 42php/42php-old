@@ -3,7 +3,7 @@
 namespace                   Core;
 
 /**
- * Handle the render of view files.
+ * Gère l'affichage des vues
  *
  * Class View
  * @package Core

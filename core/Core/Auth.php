@@ -1,0 +1,84 @@
+<?php
+
+namespace                           Core;
+
+/**
+ * Gère l'authentification
+ *
+ * Class Auth
+ * @package Core
+ */
+class                               Auth {
+    /**
+     * Retourne l'ID de l'utilisateur
+     *
+     * @return bool|mixed           Si il est connecté, retourne l'ID de l'utilisateur, sinon FALSE
+     */
+    public static function          uid() {
+        if (Auth::logged())
+            return Session::get('user.id');
+        return false;
+    }
+
+    /**
+     * Détermine si l'utilisateur est connecté ou pas.
+     *
+     * @param string|bool $environnement    Permet de tester si un utilisateur est connecté sur cet environnement
+     *
+     * @return bool                 Retourne TRUE si l'utilisateur est connecté, sinon FALSE
+     */
+    public static function          logged($environnement = false) {
+        $uid = Session::get('user.id', false);
+        $db = Session::get('user.database', true);
+        if ($uid !== false && ($db === false || $environnement === false || $db == $environnement))
+            return true;
+        return false;
+    }
+
+    /**
+     * Détermine si l'utilisateur est administrateur ou pas.
+     *
+     * @return bool                 Retourne TRUE si l'utilisateur est administrateur, sinon FALSE
+     */
+    public static function          admin() {
+        return Session::get('user.database', true) === false ||                // Si l'utilisateur est un AdminUser
+        Session::get('user.admin', false);
+    }
+
+    /**
+     * Détermine si l'utilisateur est validateur ou pas.
+     *
+     * @return bool                 Retourne TRUE si l'utilisateur est validateur, sinon FALSE
+     */
+    public static function          validator() {
+        return self::admin() || Session::get('user.validator', false);
+    }
+
+    /**
+     * Retourne une instance de l'User connecté.
+     *
+     * @return AdminUser|bool|User  Retourne l'utilisateur si il est connecté, sinon FALSE
+     */
+    public static function          user() {
+        if (!Auth::logged())
+            return false;
+        $db = Session::get('user.database', false);
+        if (!$db)
+            return new AdminUser(Session::get('user.id', ''));
+        User::$environnement = $db;
+        $user = new User(Session::get('user.id', ''));
+        User::$environnement = false;
+        return $user;
+    }
+
+    /**
+     * Se déconnecte, puis redirige l'utilisateur
+     *
+     * @param string $redirect      URL de redirection
+     */
+    public static function          logout($redirect = '/') {
+        Session::destroy();
+        if ($redirect !== false)
+            Redirect::http($redirect);
+    }
+}
