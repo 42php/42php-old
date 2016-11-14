@@ -1,5 +1,13 @@
 {
     "debug": true,
+    "database": {
+        "type": "PDO",
+        "config": {
+            "dsn": "mysql:host=localhost;dbname=42php",
+            "user": "root",
+            "pass": ""
+        }
+    },
     "i18n": {
         "languages": [
             "fr"
