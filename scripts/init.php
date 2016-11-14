@@ -24,4 +24,4 @@ if (!isset($_SERVER['REQUEST_URI'])) {
 }
 
 /** Call the autoloader. */
-include_once ROOT.'/scripts/autoload.php';
+include_once __DIR__.'/autoload.php';
