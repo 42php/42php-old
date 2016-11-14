@@ -5,8 +5,8 @@
             "fr"
         ],
         "default": "fr",
-        "actions": {
-            "newSession": "preferRoute" // preferRoute, ou preferBrowser
+        "source": {
+            "prefer": "route" // route, ou browser
         }
     },
     "cookie": {

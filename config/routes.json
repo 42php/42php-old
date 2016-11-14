@@ -1,6 +1,6 @@
 {
   "root": {
-    "controller": "TestController@home",
+    "controller": "RootController@redirect",
     "routes": {
       "fr": "/"
     }

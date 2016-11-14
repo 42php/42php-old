@@ -27,8 +27,7 @@ namespace                            Core {
             if (!file_exists(ROOT . '/i18n/' . Conf::get('lang') . '.json'))
                 return false;
 
-            $content = json_decode(file_get_contents(ROOT . '/i18n/' . Conf::get('lang') . '.json'), true);
-            self::$__translations = array_merge(self::$__translations, $content);
+            self::$__translations = JSON::toArray(ROOT . '/i18n/' . Conf::get('lang') . '.json');
             return true;
         }
 
@@ -81,12 +80,15 @@ namespace                            Core {
          * Change la langue courante
          *
          * @param string $lang Langue à configurer
+         * @param bool $reloadFile Détermine si les langues doivent être rechargées en live
          */
-        public static function setLang($lang) {
+        public static function setLang($lang, $reloadFile = false) {
             if (!in_array($lang, self::$__acceptedLanguages))
                 $lang = self::$__defaultLanguage;
             Conf::set('lang', $lang);
             Session::set(self::$__sessionKey, $lang);
+            if ($reloadFile)
+                self::load();
         }
     }
 }
