@@ -6,7 +6,7 @@
         ],
         "default": "fr",
         "source": {
-            "prefer": "route" // route, ou browser
+            "prefer": "route"
         }
     },
     "cookie": {
