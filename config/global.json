@@ -1,0 +1,41 @@
+{
+    "debug": true,
+    "i18n": {
+        "languages": [
+            "fr"
+        ],
+        "default": "fr",
+        "actions": {
+            "newSession": "preferRoute" // preferRoute, ou preferBrowser
+        }
+    },
+    "cookie": {
+     "domain": ""
+    },
+    "page": {
+        "title": "",
+        "description": "",
+        "keywords": "",
+        "robots": "noindex, nofollow",
+        "favicon": "",
+        "share": {
+            "image": "",
+            "twitter": {
+                "username": ""
+            }
+        },
+        "googleAnalytics": "",
+        "js": [],
+        "css": [],
+        "meta": [],
+        "bottom": []
+    },
+    "mail": {
+        "x-sender": "localhost"
+    },
+    "api": {
+        "keys": {
+            "": "web"
+        }
+    }
+}
