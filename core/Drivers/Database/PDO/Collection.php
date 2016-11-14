@@ -11,7 +11,7 @@ class                           Collection implements \Drivers\Database\Collecti
 
     /**
      * Collection constructor.
-     * @param PDO $pdo
+     * @param \PDO $pdo
      */
     public function             __construct($pdo) {
         $this->pdo = $pdo;
