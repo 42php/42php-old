@@ -1,0 +1,15 @@
+{
+  "root": {
+    "controller": "TestController@home",
+    "routes": {
+      "fr": "/"
+    }
+  },
+  "api": {
+    "controller": "ApiController@process",
+    "api": true,
+    "routes": {
+      "fr": "/api/*"
+    }
+  }
+}
