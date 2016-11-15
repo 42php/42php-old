@@ -110,7 +110,9 @@ class                       Http {
      */
     public static function  baseUrl() {
         $pageUrl = 'http';
-        if ($_SERVER["HTTPS"] == "on") {$pageUrl .= "s";}
+        if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {
+            $pageUrl .= "s";
+        }
         $pageUrl .= "://";
         if ($_SERVER["SERVER_PORT"] != "80") {
             $pageUrl .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
