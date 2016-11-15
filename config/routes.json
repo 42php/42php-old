@@ -1,15 +1,17 @@
 {
   "root": {
-    "controller": "RootController@redirect",
+    "controller": "StaticController@home",
     "routes": {
-      "fr": "/"
+      "fr": "/fr",
+      "en": "/en"
     }
   },
   "api": {
     "controller": "ApiController@process",
     "api": true,
     "routes": {
-      "fr": "/api/*"
+      "fr": "/api/*",
+      "en": "/api/*"
     }
   }
 }
