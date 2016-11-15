@@ -21,10 +21,10 @@ class                               Db {
         return false;
     }
 
-    public static function          date($timestamp) {
+    public static function          date($timestamp = false) {
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Date';
         if (class_exists($factory))
-            return $factory::format($timestamp);
+            return $factory::format($timestamp === false ? time() : $timestamp);
         return false;
     }
 }
