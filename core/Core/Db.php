@@ -27,4 +27,11 @@ class                               Db {
             return $factory::format($timestamp === false ? time() : $timestamp);
         return false;
     }
+
+    public static function          id($timestamp = false) {
+        $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Id';
+        if (class_exists($factory))
+            return $factory::format($timestamp === false ? time() : $timestamp);
+        return false;
+    }
 }
