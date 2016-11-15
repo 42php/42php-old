@@ -61,7 +61,7 @@ class 							Session {
          */
         if (self::$id !== false) {
             $d = Db::getInstance()->Sessions->findOne([
-                '_id' => Db::id(self::$id)
+                'id' => Db::id(self::$id)
             ]);
             if (!$d) {
                 self::$id = false;
@@ -84,8 +84,7 @@ class 							Session {
     public static function      create() {
         if (self::$id === false) {
             $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$__expire))];
-            Db::getInstance()->Sessions->insert($d);
-            self::$id = (string)$d['_id'];
+            self::$id = Db::getInstance()->Sessions->insert($d);
             Session::set('__apiSpecial.storeToken', self::$id);
         }
     }
@@ -102,13 +101,12 @@ class 							Session {
          * For the API mode, we can force the session creation with Session::create()
          */
         if (!self::$apiMode && self::$id === false) {
-            Db::getInstance()->Sessions->insert($d);
-            self::$id = (string)$d['_id'];
+            self::$id = Db::getInstance()->Sessions->insert($d);
         } elseif (self::$id !== false) {
-            if (isset($d['_id']))
-                unset($d['_id']);
+            if (isset($d['id']))
+                unset($d['id']);
             Db::getInstance()->Sessions->update([
-                '_id' => Db::id(self::$id)
+                'id' => Db::id(self::$id)
             ], $d);
         }
         if (!self::$apiMode) {
@@ -127,7 +125,7 @@ class 							Session {
         self::$__data = [];
         if (self::$id !== false) {
             Db::getInstance()->Sessions->remove([
-                '_id' => Db::id(self::$id)
+                'id' => Db::id(self::$id)
             ]);
             self::$id = false;
         }
