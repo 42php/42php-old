@@ -10,7 +10,8 @@
     },
     "i18n": {
         "languages": [
-            "fr"
+            "fr",
+            "en"
         ],
         "default": "fr",
         "source": {
