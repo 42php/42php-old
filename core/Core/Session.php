@@ -52,7 +52,7 @@ class 							Session {
          */
         Db::getInstance()->Sessions->remove([
             'expire' => [
-                '$lt' => new MongoDate()
+                '$lt' => Db::date()
             ]
         ]);
 
@@ -61,7 +61,7 @@ class 							Session {
          */
         if (self::$id !== false) {
             $d = Db::getInstance()->Sessions->findOne([
-                '_id' => new MongoId(self::$id)
+                '_id' => Db::id(self::$id)
             ]);
             if (!$d) {
                 self::$id = false;
@@ -83,7 +83,7 @@ class 							Session {
      */
     public static function      create() {
         if (self::$id === false) {
-            $d = ['data' => self::$__data, 'expire' => new MongoDate(strtotime(self::$__expire))];
+            $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$__expire))];
             Db::getInstance()->Sessions->insert($d);
             self::$id = (string)$d['_id'];
             Session::set('__apiSpecial.storeToken', self::$id);
@@ -94,7 +94,7 @@ class 							Session {
      * Enregistrement de la session en base
      */
     public static function      save() {
-        $d = ['data' => self::$__data, 'expire' => new MongoDate(strtotime(self::$__expire))];
+        $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$__expire))];
         /**
          * If no active session, create a new session in DB, or update data in DB
          * If we are in API mode, no session will be created
@@ -108,7 +108,7 @@ class 							Session {
             if (isset($d['_id']))
                 unset($d['_id']);
             Db::getInstance()->Sessions->update([
-                '_id' => new MongoId(self::$id)
+                '_id' => Db::id(self::$id)
             ], $d);
         }
         if (!self::$apiMode) {
@@ -127,7 +127,7 @@ class 							Session {
         self::$__data = [];
         if (self::$id !== false) {
             Db::getInstance()->Sessions->remove([
-                '_id' => new MongoId(self::$id)
+                '_id' => Db::id(self::$id)
             ]);
             self::$id = false;
         }
