@@ -27,5 +27,6 @@ class                                   RootController extends \Core\Controller 
             }
         }
         \Core\Http::responseCode(404);
+        return '';
     }
 }
