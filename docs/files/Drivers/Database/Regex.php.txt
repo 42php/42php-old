@@ -9,22 +9,20 @@
  * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
  */
 
-namespace                   Drivers\Database\PDO;
+namespace                       Drivers\Database;
 
 /**
- * Gère les id sous PDO
+ * Gère les expressions régulières pour le driver configuré
  *
- * Class Id
- * @package Drivers\Database\PDO
+ * Interface Regex
+ * @package Drivers\Database
  */
-class                       Id implements \Drivers\Database\Id {
+interface                       Regex {
     /**
-     * Formatte un identifiant de document pour le SQL
+     * Regex constructor.
      *
-     * @param int $id       ID
-     * @return int          L'ID standardisé
+     * @param string $regex     L'expression régulière
+     * @return mixed            L'expression régulière formattée
      */
-    public static function  format($id) {
-        return intval($id);
-    }
+    public static function      format($regex);
 }

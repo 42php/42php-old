@@ -17,14 +17,16 @@ namespace                   Drivers\Database\PDO;
  * Class Id
  * @package Drivers\Database\PDO
  */
-class                       Id implements \Drivers\Database\Id {
+class                       Regex implements \Drivers\Database\Regex {
     /**
-     * Formatte un identifiant de document pour le SQL
+     * Formatte une expression régulière
      *
-     * @param int $id       ID
-     * @return int          L'ID standardisé
+     * @param string $regex L'expression régulière
+     * @return string       L'expression régulière formattée
      */
-    public static function  format($id) {
-        return intval($id);
+    public static function  format($regex) {
+        $delimiter = substr($regex, 0, 1);
+        $last = strrpos($regex, $delimiter);
+        return substr($regex, 1, $last - 1);
     }
 }
