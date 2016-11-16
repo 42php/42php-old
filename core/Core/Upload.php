@@ -9,7 +9,7 @@
  * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
  */
 
-namespace           Core;
+namespace                           Core;
 
 /**
  * Gère l'upload de fichiers vers le serveur.
@@ -17,33 +17,33 @@ namespace           Core;
  * Class Upload
  * @package Core
  */
-class 				Upload {
+class 				                Upload {
     /** @var array $allowedExtensions Extensions de fichier autorisées. Si vide, toutes sont autorisées */
-    private 			$allowedExtensions = [];
+    private 		                $allowedExtensions = [];
 
     /** @var string $filename Nom du fichier */
-    public	 		$filename;
+    public	 		                $filename;
 
     /** @var string $extension Extension du fichier */
-    public	 		$extension;
+    public	 		                $extension;
 
     /** @var string $tmpName Nom temporaire */
-    private 			$tmpName;
+    private 		                $tmpName;
 
     /** @var int $maxSize Taille maximale autorisée */
-    private 			$maxSize;
+    private                         $maxSize;
 
     /** @var bool $uploaded Si TRUE, le fichier à bien été uploadé */
-    public	 		$uploaded;
+    public	 		                $uploaded;
 
     /** @var int $error Code d'erreur */
-    public	 		$error;
+    public	 		                $error;
 
     /** @var int $size Taille du fichier */
-    public 			$size;
+    public 			                $size;
 
     /** @var string $uploadDir Dossier d'upload */
-    public static 	$uploadDir = '/uploads/';
+    public static 	                $uploadDir = '/uploads/';
 
     /**
      * Routine d'upload d'un fichier
@@ -54,7 +54,7 @@ class 				Upload {
      *
      * @return bool|string          Retourne le chemin du fichier uploadé, sinon FALSE si l'upload a échoué.
      */
-    public static function 	job($field, $isData = false, $extensions = []) {
+    public static function 	        job($field, $isData = false, $extensions = []) {
         $u = new Upload($field, $isData);
         if ($u->error() != UPLOAD_ERR_OK)
             return false;
@@ -83,7 +83,7 @@ class 				Upload {
      * @param mixed $field          Champ du $_FILE, ou directement l'entrée du tableau.
      * @param bool $isData          Détermine si oui, ou non, la valeur dans $field est l'entrée du tableau.
      */
-    public function 		__construct($field, $isData = false) {
+    public function 		        __construct($field, $isData = false) {
         if (!$isData)
             $file = $_FILES[$field];
         else
@@ -107,9 +107,9 @@ class 				Upload {
     /**
      * Autorise une extension
      *
-     * @param string $ext       Extension
+     * @param string $ext           Extension
      */
-    public function 		allowExtension($ext) {
+    public function 		        allowExtension($ext) {
         $this->allowedExtensions[] = $ext;
         $this->allowedExtensions = array_unique($this->allowedExtensions);
     }
@@ -117,45 +117,45 @@ class 				Upload {
     /**
      * Autorise plusieurs extensions
      *
-     * @param array $arr        Liste des extensions
+     * @param array $arr            Liste des extensions
      */
-    public function 		allowExtensions($arr = []) {
+    public function 		        allowExtensions($arr = []) {
         $this->allowedExtensions = array_unique(array_merge($this->allowedExtensions, $arr));
     }
 
     /**
      * Fixe la valeur de la taille maximale autorisée.
      *
-     * @param int $maxSize      Taille maximale autorisée
+     * @param int $maxSize          Taille maximale autorisée
      */
-    public function 		setMaxSize($maxSize) {
+    public function 		        setMaxSize($maxSize) {
         $this->maxSize = $maxSize;
     }
 
     /**
      * Détermine si oui, ou non, le fichier a bien été uploadé.
      *
-     * @return bool             Détermine si oui, ou non, le fichier a bien été uploadé.
+     * @return bool                 Détermine si oui, ou non, le fichier a bien été uploadé.
      */
-    public function 		uploaded() {
+    public function 		        uploaded() {
         return $this->uploaded;
     }
 
     /**
      * Retourne le code d'erreur.
      *
-     * @return int      Code d'erreur
+     * @return int                  Code d'erreur
      */
-    public function 		error() {
+    public function 		        error() {
         return $this->error;
     }
 
     /**
      * Retourne un message d'erreur lié au code d'erreur.
      *
-     * @return string   Message d'erreur.
+     * @return string               Message d'erreur.
      */
-    public function 		errorMsg() {
+    public function 		        errorMsg() {
         switch ($this->error) {
             case UPLOAD_ERR_OK:
                 return '';
@@ -185,42 +185,41 @@ class 				Upload {
                 return _t('Erreur inconnue.');
                 break;
         }
-        return _t('Erreur inconnue.');
     }
 
     /**
      * Retourne le nom du fichier.
      *
-     * @return string       Nom du fichier
+     * @return string               Nom du fichier
      */
-    public function 		filename() {
+    public function 		        filename() {
         return $this->filename;
     }
 
     /**
      * Retourne la taille du fichier
      *
-     * @return int Taille
+     * @return int                  Taille
      */
-    public function 		size() {
+    public function 		        size() {
         return $this->size;
     }
 
     /**
      * Retourne l'extension du fichier
      *
-     * @return string Extension
+     * @return string               Extension
      */
-    public function 		extension() {
+    public function 		        extension() {
         return $this->extension;
     }
 
     /**
      * Détermine si le fichier peut être uploadé ou pas.
      *
-     * @return bool TRUE si le fichier peut être uploadé, sinon FALSE.
+     * @return bool                 TRUE si le fichier peut être uploadé, sinon FALSE.
      */
-    private function		allowed() {
+    private function		        allowed() {
         // Check size
         if ($this->size > $this->maxSize) {
             $this->error = UPLOAD_ERR_FORM_SIZE;
@@ -236,9 +235,9 @@ class 				Upload {
     /**
      * Retourne le contenu du fichier en base64.
      *
-     * @return bool|string      Si le fichier peut être uploadé, retourne son contenu en base64, sinon FALSE.
+     * @return bool|string          Si le fichier peut être uploadé, retourne son contenu en base64, sinon FALSE.
      */
-    public function 		base64() {
+    public function 		        base64() {
         if ($this->allowed())
             return base64_encode(file_get_contents($this->tmpName));
         return false;
@@ -253,7 +252,7 @@ class 				Upload {
      *                                  ou est à FALSE, retourne le contenu du fichier, sinon écrit le fichier dans le
      *                                  dossier de destination.
      */
-    public function 		register($filename = false) {
+    public function 		        register($filename = false) {
         if (!$this->allowed())
             return false;
         if (!$filename)
