@@ -71,14 +71,13 @@ class                               MongoToSQL {
             foreach ($fields as $f)
                 $tmp[] = 'null';
             foreach ($line as $k => $v) {
-                $tmp[array_search($k, $fields)] = \Core\Db::getInstance()->quote($v);
+                $tmp[array_search($k, $fields)] = \Core\Db::getInstance()->quote(self::toDb($v));
             }
             $lines[] = $tmp;
         }
 
-        array_map(function($line){
-            return implode(', ', $line);
-        }, $lines);
+        foreach ($lines as &$line)
+            $line = implode(', ', $line);
 
         return 'INSERT INTO `' . $table . '` (`'.implode('`, `', $fields).'`) VALUES (' . implode('), (', $lines) . ')';
     }
@@ -101,7 +100,7 @@ class                               MongoToSQL {
             switch ($k) {
                 case '$set':
                     foreach ($v as $kk => $vv) {
-                        $list[] = '`' . $kk . '`=' . \Core\Db::getInstance()->quote($vv);
+                        $list[] = '`' . $kk . '`=' . \Core\Db::getInstance()->quote(self::toDb($vv));
                     }
                     break;
                 case '$currentDate':
@@ -243,5 +242,33 @@ class                               MongoToSQL {
             $sql[] = '`' . $k . '` ' . ($v ? 'ASC' : 'DESC');
         }
         return implode(', ', $sql);
+    }
+
+    /**
+     * Traite un champ avant son retour de la DB
+     *
+     * @param string $data          Chaîne de caractère
+     * @return array|string|object  Chaîne traitée
+     */
+    public static function      fromDb($data) {
+        if (substr($data, 0, 20) == '42php.db.json.array:')
+            return \Core\JSON::toArray(substr($data, 20));
+        if (substr($data, 0, 21) == '42php.db.json.object:')
+            return \Core\JSON::toObject(substr($data, 21));
+        return $data;
+    }
+
+    /**
+     * Traite un champ avant son import en base
+     *
+     * @param mixed $data       Valeur
+     * @return string           Résultat
+     */
+    public static function      toDb($data) {
+        if (is_array($data))
+            $data = '42php.db.json.array:'.json_encode($data);
+        if (is_object($data))
+            $data = '42php.db.json.object:'.json_encode($data);
+        return $data;
     }
 }
