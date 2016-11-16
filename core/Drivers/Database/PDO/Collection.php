@@ -102,11 +102,13 @@ class                           Collection implements \Drivers\Database\Collecti
      * @param array $sort       Champs de tris
      * @param bool|int $skip    Nombre de documents à ignorer
      * @param bool|int $limit   Nombre de documents à retourner
-     * @return array            Liste des documents
+     * @return array|bool       Liste des documents
      */
     public function             find($clause = [], $fields = [], $sort = [], $skip = false, $limit = false) {
         $query = MongoToSQL::select($this->table, $clause, $fields, $sort, $skip, $limit);
         $ret = $this->handler->query($query);
+        if (!$ret)
+            return false;
         foreach ($ret as &$row)
             array_map(function($d){
                 return \Drivers\Database\PDO\MongoToSQL::fromDb($d);
@@ -123,6 +125,8 @@ class                           Collection implements \Drivers\Database\Collecti
      */
     public function             findOne($clause = [], $fields = []) {
         $ret = $this->find($clause, $fields, [], false, 1);
+        if (!$ret)
+            return false;
         if (sizeof($ret)) {
             array_map(function($d){
                 return \Drivers\Database\PDO\MongoToSQL::fromDb($d);

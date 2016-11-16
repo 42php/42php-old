@@ -76,9 +76,8 @@ class                               MongoToSQL {
             $lines[] = $tmp;
         }
 
-        array_map(function($line){
-            return implode(', ', $line);
-        }, $lines);
+        foreach ($lines as &$line)
+            $line = implode(', ', $line);
 
         return 'INSERT INTO `' . $table . '` (`'.implode('`, `', $fields).'`) VALUES (' . implode('), (', $lines) . ')';
     }
