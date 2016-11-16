@@ -13,7 +13,7 @@
  *  - Foo_Bar -> /{folder}/Foo/Bar.php
  */
 spl_autoload_register(function($class){
-    $folders = ['core', 'controllers', 'models', 'drivers'];
+    $folders = ['core', 'controllers', 'models', 'lib'];
     $class = str_replace(['_', '\\'], '/', $class);
     foreach ($folders as $folder) {
         $file = implode('/', [
