@@ -34,12 +34,13 @@ class                               Db {
      * Formatte une date pour le driver configuré
      *
      * @param bool|int $timestamp   Timestamp
+     * @param bool $withTime        Inclure le temps
      * @return mixed                La date formattée
      */
-    public static function          date($timestamp = false) {
+    public static function          date($timestamp = false, $withTime = true) {
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Date';
         if (class_exists($factory))
-            return $factory::format($timestamp === false ? time() : $timestamp);
+            return $factory::format($timestamp === false ? time() : $timestamp, $withTime);
         return false;
     }
 
