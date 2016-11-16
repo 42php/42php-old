@@ -59,6 +59,17 @@ class 							JSON {
     public static function      parse($url, $asObject = false) {
         return $asObject ? self::toObject($url) : self::toArray($url);
     }
+
+    /**
+     * Détermine si une chaîne est du JSON
+     *
+     * @param string $string    Chaîne de caractères à tester
+     * @return bool             TRUE si la chaîne est du JSON
+     */
+    public static function      is($string) {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
 }
 
 ?>
