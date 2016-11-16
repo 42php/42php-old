@@ -98,7 +98,43 @@ class                               MongoToSQL {
 
         $list = [];
         foreach ($values as $k => $v) {
-            $list[] = '`' . $k . '`=' . \Core\Db::getInstance()->quote($v);
+            switch ($k) {
+                case '$set':
+                    foreach ($v as $kk => $vv) {
+                        $list[] = '`' . $kk . '`=' . \Core\Db::getInstance()->quote($vv);
+                    }
+                    break;
+                case '$currentDate':
+                    foreach ($v as $kk => $vv) {
+                        if (is_array($vv)) {
+                            switch ($vv['$type']) {
+                                case 'timestamp':
+                                    $list[] = '`' . $kk . '`=' . \Core\Db::getInstance()->quote(\Core\Db::date(time(), true));
+                                    break;
+                                case 'date':
+                                    $list[] = '`' . $kk . '`=' . \Core\Db::getInstance()->quote(\Core\Db::date(time(), false));
+                                    break;
+                            }
+                        } elseif ($vv === true)
+                            $list[] = '`' . $kk . '`=' . \Core\Db::getInstance()->quote(\Core\Db::date(time(), true));
+                    }
+                    break;
+                case '$inc':
+                    foreach ($v as $kk => $vv) {
+                        $list[] = '`' . $kk . '`=`' . $kk . '` + ' . floatval($vv);
+                    }
+                    break;
+                case '$mul':
+                    foreach ($v as $kk => $vv) {
+                        $list[] = '`' . $kk . '`=`' . $kk . '` * ' . floatval($vv);
+                    }
+                    break;
+                case '$unset':
+                    foreach ($v as $kk => $vv) {
+                        $list[] = '`' . $kk . '`=null';
+                    }
+                    break;
+            }
         }
 
         $sql = 'UPDATE `' . $table . '` SET ' . implode(', ', $list) . ' ';
