@@ -73,7 +73,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return Collection
      */
     public function             __get($k) {
-        return new Collection($this->pdo);
+        return new Collection($this, $this->pdo);
     }
 
     /**
@@ -84,5 +84,41 @@ class                           Factory implements \Drivers\Database\Factory {
      */
     public function             quote($value) {
         return $this->pdo->quote($value);
+    }
+
+    /**
+     * Appelle PDO::exec()
+     *
+     * @param string $query     Requête SQL
+     * @return int              Nombre de résultats affectés
+     */
+    public function             exec($query) {
+        return $this->pdo->exec($query);
+    }
+
+    /**
+     * Appelle PDO::query() et retourne l'ensemble des résultats
+     *
+     * @param string $query     Requête SQL
+     * @return array|bool       L'ensemble des résultats ou FALSE
+     */
+    public function             query($query) {
+        $ret = $this->pdo->query($query);
+        if (!$ret)
+            return false;
+        return $ret->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Appelle PDO::query() et retourne le premier résultat
+     *
+     * @param string $query     Requête SQL
+     * @return mixed            Le résultat sous la forme d'un tableau ou FALSE
+     */
+    public function             get($query) {
+        $ret = $this->pdo->query($query);
+        if (!$ret)
+            return false;
+        return $ret->fetch(\PDO::FETCH_ASSOC);
     }
 }
