@@ -73,7 +73,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return Collection
      */
     public function             __get($k) {
-        return new Collection($this, $this->pdo);
+        return new Collection($k, $this, $this->pdo);
     }
 
     /**
