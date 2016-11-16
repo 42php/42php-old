@@ -46,19 +46,22 @@ interface                   Collection {
      * Trouve plusieurs documents
      *
      * @param array $clause     La requête, au format MongoDB
-     * @param array $values     Les champs à retourner
+     * @param array $fields     Les champs à retourner
+     * @param array $sort       Champs de tris
+     * @param bool|int $skip    Nombre de documents à ignorer
+     * @param bool|int $limit   Nombre de documents à retourner
      * @return mixed            Un curseur de lecture sur les documents
      */
-    public function         find($clause = [], $values = []);
+    public function         find($clause = [], $fields = [], $sort = [], $skip = false, $limit = false);
 
     /**
      * Trouve un document
      *
      * @param array $clause     La requête, au format MongoDB
-     * @param array $values     Les champs à retourner
+     * @param array $fields     Les champs à retourner
      * @return mixed            Le document
      */
-    public function         findOne($clause = [], $values = []);
+    public function         findOne($clause = [], $fields = []);
 
     /**
      * Supprime un ou plusieurs documents

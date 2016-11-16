@@ -27,85 +27,116 @@ class                           Collection implements \Drivers\Database\Collecti
     private                     $handler = null;
 
     /**
+     * @var string $table       Nom de la table
+     */
+    private                     $table = '';
+
+    /**
      * Collection constructor.
      *
-     * @param Factory $handler
-     * @param \PDO $pdo
+     * @param string $tableName Nom de la table
+     * @param Factory $handler  Handler
+     * @param \PDO $pdo         Objet PDO
      */
-    public function             __construct($handler, $pdo) {
+    public function             __construct($tableName, $handler, $pdo) {
         $this->pdo = $pdo;
         $this->handler = $handler;
+        $this->table = $tableName;
     }
 
     /**
      * Insère un document en base de données
      *
-     * @param $data
-     * @return mixed
+     * @param array $data       Document à insérer
+     * @return string           ID du document inséré
      */
-    public function insert(&$data)
-    {
-        // TODO: Implement insert() method.
+    public function             insert(&$data) {
+        $query = MongoToSQL::insert($this->table, $data);
+        $this->handler->exec($query);
+        $data['id'] = $this->handler->lastId();
+        return $data['id'];
     }
 
     /**
      * Met à jour un ou plusieurs documents
      *
-     * @param array $clause
-     * @param array $data
-     * @param array $options
-     * @return mixed
+     * @param array $clause     Clauses de recherche
+     * @param array $data       Champs à modifier
+     * @param array $options    Options de modification
+     * @return mixed            Nombre de documents modifiés
      */
-    public function update($clause = [], $data = [], $options = [])
-    {
-        // TODO: Implement update() method.
+    public function             update($clause = [], $data = [], $options = []) {
+        $limit = 1;
+        if (isset($option['multiple']) && $option['multiple'])
+            $limit = false;
+        $query = MongoToSQL::update($this->table, $data, $clause, $limit);
+        return $this->handler->exec($query);
     }
 
     /**
      * Sauvegarde un document (effectue un upsert)
      *
-     * @param $data
-     * @return mixed
+     * @param array $data       Document à enregistrer
+     * @return mixed            Identifiant du document
      */
-    public function save(&$data)
-    {
-        // TODO: Implement save() method.
+    public function             save(&$data) {
+        if (isset($data['id'])) {
+            $d = $data;
+            unset($d['id']);
+            $this->update([
+                'id' => \Core\Db::id($data['id'])
+            ], [
+                '$set' => $d
+            ]);
+        } else {
+            $this->insert($data);
+        }
+        return $data['id'];
     }
 
     /**
      * Trouve une liste de documents
      *
-     * @param array $clause
-     * @param array $values
-     * @return mixed
+     * @param array $clause     Clause de recherche
+     * @param array $fields     Champs à retourner
+     * @param array $sort       Champs de tris
+     * @param bool|int $skip    Nombre de documents à ignorer
+     * @param bool|int $limit   Nombre de documents à retourner
+     * @return array            Liste des documents
      */
-    public function find($clause = [], $values = [])
-    {
-        // TODO: Implement find() method.
+    public function             find($clause = [], $fields = [], $sort = [], $skip = false, $limit = false) {
+        $query = MongoToSQL::select($this->table, $clause, $fields, $sort, $skip, $limit);
+        return $this->handler->query($query);
     }
 
     /**
      * Trouve un document
      *
-     * @param array $clause
-     * @param array $values
-     * @return mixed
+     * @param array $clause     Clause de recherche
+     * @param array $fields     Champs à retourner
+     * @return mixed            Premier document trouvé
      */
-    public function findOne($clause = [], $values = [])
-    {
-        // TODO: Implement findOne() method.
+    public function             findOne($clause = [], $fields = []) {
+        $ret = $this->find($clause, $fields, [], false, 1);
+        if (sizeof($ret))
+            return $ret[0];
+        return false;
     }
 
     /**
      * Supprime un ou plusieurs documents
      *
-     * @param array $clause
-     * @param array $options
-     * @return mixed
+     * @param array $clause     Clause de recherche
+     * @param array $options    Options de suppression
+     * @return int              Nombre de documents supprimés
      */
-    public function remove($clause = [], $options = [])
+    public function             remove($clause = [], $options = [])
     {
-        // TODO: Implement remove() method.
+        $limit = false;
+        if (isset($options['justOne']) && $options['justOne'])
+            $limit = 1;
+        $query = MongoToSQL::delete($this->table, $clause, $limit);
+        return $this->handler->exec($query);
     }
 
 }
