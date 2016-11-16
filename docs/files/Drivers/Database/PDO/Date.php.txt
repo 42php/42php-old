@@ -22,9 +22,12 @@ class                       Date implements \Drivers\Database\Date {
      * Formatte une date pour le SQL
      *
      * @param int $timestamp        Timestamp
+     * @param bool $withTime        Inclure le temps
      * @return string               La date formattée Y-m-d H:i:s
      */
-    public static function  format($timestamp) {
-        return date('Y-m-d H:i:s', $timestamp);
+    public static function  format($timestamp, $withTime = true) {
+        if ($withTime)
+            return date('Y-m-d H:i:s', $timestamp);
+        return date('Y-m-d', $timestamp);
     }
 }

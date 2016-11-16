@@ -22,7 +22,8 @@ interface                       Date {
      * Formatte une date dans le format propre au driver
      *
      * @param int $timestamp Timestamp
+     * @param bool $withTime Inclure le temps
      * @return mixed
      */
-    public static function      format($timestamp);
+    public static function      format($timestamp, $withTime = true);
 }
