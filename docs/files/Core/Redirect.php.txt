@@ -1,0 +1,41 @@
+<?php
+/**
+ * LICENSE: This source file is subject to version 3.0 of the GPL license
+ * that is available through the world-wide-web at the following URI:
+ * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
+ *
+ * @author      Guillaume Gagnaire <contact@42php.com>
+ * @link        https://www.github.com/42php/42php
+ * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ */
+
+namespace           Core;
+
+/**
+ * Gère les redirections.
+ *
+ * Class Redirect
+ * @package Core
+ */
+class				Redirect {
+    /**
+     * Effectue une redirection permanente (redirection 301)
+     *
+     * @param string $to    Destination
+     */
+    public static function	permanent($to) {
+        header('HTTP/1.1 301 Moved Permanently', false, 301);
+        self::http($to);
+    }
+
+    /**
+     * Effectue une redirection temporaire (redirection 302)
+     *
+     * @param string $to    Destination
+     */
+    public static function	http($to) {
+        Session::save();
+        header("Location: $to");
+        die();
+    }
+}
