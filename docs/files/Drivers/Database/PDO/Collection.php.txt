@@ -22,11 +22,19 @@ class                           Collection implements \Drivers\Database\Collecti
     private                     $pdo = null;
 
     /**
+     * @var Factory|null        La factory
+     */
+    private                     $handler = null;
+
+    /**
      * Collection constructor.
+     *
+     * @param Factory $handler
      * @param \PDO $pdo
      */
-    public function             __construct($pdo) {
+    public function             __construct($handler, $pdo) {
         $this->pdo = $pdo;
+        $this->handler = $handler;
     }
 
     /**
