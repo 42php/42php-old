@@ -75,4 +75,14 @@ class                           Factory implements \Drivers\Database\Factory {
     public function             __get($k) {
         return new Collection($this->pdo);
     }
+
+    /**
+     * Appelle PDO::quote()
+     *
+     * @param string $value     Valeur
+     * @return string           Valeur filtrée
+     */
+    public function             quote($value) {
+        return $this->pdo->quote($value);
+    }
 }
