@@ -55,4 +55,17 @@ class                               Db {
             return $factory::format($id);
         return false;
     }
+
+    /**
+     * Formatte une expression régulière pour le driver configuré
+     *
+     * @param string $regex     L'expression régulière
+     * @return mixed            L'expression régulière formattée
+     */
+    public static function          regex($regex) {
+        $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Regex';
+        if (class_exists($factory))
+            return $factory::format($regex);
+        return false;
+    }
 }
