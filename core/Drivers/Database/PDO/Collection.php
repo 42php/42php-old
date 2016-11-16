@@ -130,40 +130,11 @@ class                           Collection implements \Drivers\Database\Collecti
      * @param array $options    Options de suppression
      * @return int              Nombre de documents supprimés
      */
-    public function             remove($clause = [], $options = [])
-    {
+    public function             remove($clause = [], $options = []) {
         $limit = false;
         if (isset($options['justOne']) && $options['justOne'])
             $limit = 1;
         $query = MongoToSQL::delete($this->table, $clause, $limit);
         return $this->handler->exec($query);
-    }
-
-    /**
-     * Traite un champ avant son retour de la DB
-     *
-     * @param string $data          Chaîne de caractère
-     * @return array|string|object  Chaîne traitée
-     */
-    public static function      fromDb($data) {
-        if (substr($data, 0, 20) == '42php.db.json.array:')
-            return \Core\JSON::toArray(substr($data, 20));
-        if (substr($data, 0, 21) == '42php.db.json.object:')
-            return \Core\JSON::toObject(substr($data, 21));
-        return $data;
-    }
-
-    /**
-     * Traite un champ avant son import en base
-     *
-     * @param mixed $data       Valeur
-     * @return string           Résultat
-     */
-    public static function      toDb($data) {
-        if (is_array($data))
-            $data = '42php.db.json.array:'.json_encode($data);
-        if (is_object($data))
-            $data = '42php.db.json.object:'.json_encode($data);
-        return $data;
     }
 }
