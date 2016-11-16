@@ -71,7 +71,7 @@ class                               MongoToSQL {
             foreach ($fields as $f)
                 $tmp[] = 'null';
             foreach ($line as $k => $v) {
-                $tmp[array_search($k, $fields)] = \Core\Db::getInstance()->quote($v);
+                $tmp[array_search($k, $fields)] = \Core\Db::getInstance()->quote(self::toDb($v));
             }
             $lines[] = $tmp;
         }
@@ -101,7 +101,7 @@ class                               MongoToSQL {
             switch ($k) {
                 case '$set':
                     foreach ($v as $kk => $vv) {
-                        $list[] = '`' . $kk . '`=' . \Core\Db::getInstance()->quote($vv);
+                        $list[] = '`' . $kk . '`=' . \Core\Db::getInstance()->quote(self::toDb($vv));
                     }
                     break;
                 case '$currentDate':

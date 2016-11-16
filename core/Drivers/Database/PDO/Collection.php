@@ -106,7 +106,12 @@ class                           Collection implements \Drivers\Database\Collecti
      */
     public function             find($clause = [], $fields = [], $sort = [], $skip = false, $limit = false) {
         $query = MongoToSQL::select($this->table, $clause, $fields, $sort, $skip, $limit);
-        return $this->handler->query($query);
+        $ret = $this->handler->query($query);
+        foreach ($ret as &$row)
+            array_map(function($d){
+                return \Drivers\Database\PDO\MongoToSQL::fromDb($d);
+            }, $row);
+        return $ret;
     }
 
     /**
@@ -118,8 +123,12 @@ class                           Collection implements \Drivers\Database\Collecti
      */
     public function             findOne($clause = [], $fields = []) {
         $ret = $this->find($clause, $fields, [], false, 1);
-        if (sizeof($ret))
+        if (sizeof($ret)) {
+            array_map(function($d){
+                return \Drivers\Database\PDO\MongoToSQL::fromDb($d);
+            }, $ret[0]);
             return $ret[0];
+        }
         return false;
     }
 
