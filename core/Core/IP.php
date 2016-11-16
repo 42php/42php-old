@@ -1,6 +1,6 @@
 <?php
 
-namespace                   IP;
+namespace                   Core;
 
 class 						IP {
     /**
