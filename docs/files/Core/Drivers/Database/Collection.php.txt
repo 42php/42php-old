@@ -1,0 +1,16 @@
+<?php
+
+namespace                   Drivers\Database;
+
+/**
+ * Interface Factory
+ * @package Drivers\Database
+ */
+interface                   Collection {
+    public function         insert($data);
+    public function         update($clause = [], $data = [], $options = []);
+    public function         save($data);
+    public function         find($clause = [], $values = []);
+    public function         findOne($clause = [], $values = []);
+    public function         remove($clause = [], $options = []);
+}

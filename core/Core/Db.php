@@ -1,4 +1,13 @@
 <?php
+/**
+ * LICENSE: This source file is subject to version 3.0 of the GPL license
+ * that is available through the world-wide-web at the following URI:
+ * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
+ *
+ * @author      Guillaume Gagnaire <contact@42php.com>
+ * @link        https://www.github.com/42php/42php
+ * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ */
 
 namespace                           Core;
 
@@ -21,6 +30,12 @@ class                               Db {
         return false;
     }
 
+    /**
+     * Formatte une date pour le driver configuré
+     *
+     * @param bool|int $timestamp   Timestamp
+     * @return mixed                La date formattée
+     */
     public static function          date($timestamp = false) {
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Date';
         if (class_exists($factory))
@@ -28,10 +43,16 @@ class                               Db {
         return false;
     }
 
-    public static function          id($timestamp = false) {
+    /**
+     * Formatte un identifiant de document pour le driver configuré
+     *
+     * @param mixed $id             Identifiant du document
+     * @return mixed                L'identifiant formatté
+     */
+    public static function          id($id = false) {
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Id';
         if (class_exists($factory))
-            return $factory::format($timestamp === false ? time() : $timestamp);
+            return $factory::format($id);
         return false;
     }
 }

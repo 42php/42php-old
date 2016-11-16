@@ -1,0 +1,103 @@
+<?php
+
+namespace                   Core;
+
+/**
+ * Class Text
+ */
+class 						Text {
+    /**
+     * Génère une chaîne aléatoire.
+     *
+     * @param int $length           Longueur de la chaîne à générer
+     * @param string $charset       Jeu de caractères
+     *
+     * @return string               Chaîne générée
+     */
+    public static function 	random($length = 8, $charset = 'azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890') {
+        $text = '';
+        while ($length-- > 0)
+            $text .= $charset[rand(0, strlen($charset) - 1)];
+        return $text;
+    }
+
+    /**
+     * Formatte une distance en format textuel (en mètres ou en kilomètres)
+     *
+     * @param float $distance       Distance en mètres
+     *
+     * @return string               Distance formatée
+     */
+    public static function 	beautifulDistance($distance){
+        if ($distance < 1000)
+            return (intval($distance / 10) * 10) . 'm';
+        return str_replace('.', ',', sprintf('%.1f', $distance / 1000)).'km';
+    }
+
+    /**
+     * Génère une chaîne de caractères safe.
+     *
+     * @param string $str           Chaîne à nettoyer
+     * @param array $replace        Caractères à supprimer
+     * @param string $delimiter     Délimiteur
+     *
+     * @return string               Chaîne nettoyée
+     */
+    public static function 	slug($str, $replace = array(), $delimiter = '-') {
+        setlocale(LC_ALL, 'en_US.UTF8');
+        if (!empty($replace)) {
+            $str = str_replace((array)$replace, ' ', $str);
+        }
+        $str = self::ru2lat($str);
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
+        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
+        $clean = strtolower(trim($clean, '-'));
+        $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
+
+        return $clean;
+    }
+
+    /**
+     * Transforme une chaîne de caractère du cyrilique au latin.
+     *
+     * @param $str              Chaîne de caractère en cyrilique
+     *
+     * @return string           Chaîne de caractère en latin
+     */
+    public static function 	ru2lat($str) {
+        $tr = array(
+            "А"=>"a", "Б"=>"b", "В"=>"v", "Г"=>"g", "Д"=>"d",
+            "Е"=>"e", "Ё"=>"yo", "Ж"=>"zh", "З"=>"z", "И"=>"i",
+            "Й"=>"j", "К"=>"k", "Л"=>"l", "М"=>"m", "Н"=>"n",
+            "О"=>"o", "П"=>"p", "Р"=>"r", "С"=>"s", "Т"=>"t",
+            "У"=>"u", "Ф"=>"f", "Х"=>"kh", "Ц"=>"ts", "Ч"=>"ch",
+            "Ш"=>"sh", "Щ"=>"sch", "Ъ"=>"", "Ы"=>"y", "Ь"=>"",
+            "Э"=>"e", "Ю"=>"yu", "Я"=>"ya", "а"=>"a", "б"=>"b",
+            "в"=>"v", "г"=>"g", "д"=>"d", "е"=>"e", "ё"=>"yo",
+            "ж"=>"zh", "з"=>"z", "и"=>"i", "й"=>"j", "к"=>"k",
+            "л"=>"l", "м"=>"m", "н"=>"n", "о"=>"o", "п"=>"p",
+            "р"=>"r", "с"=>"s", "т"=>"t", "у"=>"u", "ф"=>"f",
+            "х"=>"kh", "ц"=>"ts", "ч"=>"ch", "ш"=>"sh", "щ"=>"sch",
+            "ъ"=>"", "ы"=>"y", "ь"=>"", "э"=>"e", "ю"=>"yu",
+            "я"=>"ya", " "=>"-", "."=>"", ","=>"", "/"=>"-",
+            ":"=>"", ";"=>"","—"=>"", "–"=>"-"
+        );
+        return strtr($str,$tr);
+    }
+
+    /**
+     * Retourne l'extension d'un nom de fichier
+     *
+     * @param string $filename      Nom de fichier
+     * @param bool $uppercase       Détermine si l'extension doit être en majuscules
+     *
+     * @return string               L'extension
+     */
+    public static function  getExtension($filename, $uppercase = false) {
+        $ext = explode('.', $filename);
+        $ext = $ext[sizeof($ext) - 1];
+        if ($uppercase)
+            $ext = strtoupper($ext);
+        return $ext;
+    }
+}

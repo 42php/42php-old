@@ -1,0 +1,27 @@
+<?php
+
+namespace                       Core;
+
+/**
+ * Gère l'exécution de scripts en ligne de commande
+ *
+ * Class Cli
+ * @package Core
+ */
+class                           Cli {
+    /**
+     * Détermine si le script courant est exécuté depuis le bash
+     *
+     * @return bool
+     */
+    public static function      is() {
+        return $_SERVER['HTTP_HOST'] == 'cli';
+    }
+
+    /**
+     * Force le système à croire que le script courant est exécuté depuis le bash
+     */
+    public static function      force() {
+        $_SERVER['HTTP_HOST'] = 'cli';
+    }
+}

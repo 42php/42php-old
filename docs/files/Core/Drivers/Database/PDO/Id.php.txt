@@ -1,0 +1,21 @@
+<?php
+
+namespace                   Drivers\Database\PDO;
+
+/**
+ * Gère les id sous PDO
+ *
+ * Class Id
+ * @package Drivers\Database\PDO
+ */
+class                       Id implements \Drivers\Database\Id {
+    /**
+     * Formatte une date pour le SQL
+     *
+     * @param int $id       ID
+     * @return int          L'ID standardisé
+     */
+    public static function  format($id) {
+        return intval($id);
+    }
+}

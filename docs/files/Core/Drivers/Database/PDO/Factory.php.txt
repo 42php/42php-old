@@ -1,0 +1,46 @@
+<?php
+
+namespace                       Drivers\Database\PDO;
+
+/**
+ * Gère la connexion à une base de données SQL via PDO
+ *
+ * Class Factory
+ * @package Drivers\Database\PDO
+ */
+class                           Factory implements \Drivers\Database\Factory {
+    private static              $singleton = null;
+
+    public static function      getInstance() {
+        if (is_null(self::$singleton)) {
+            try {
+                $pdo = new \PDO(
+                    \Core\Conf::get('database.config.dsn', 'mysql:host=localhost;dbname=42php'),
+                    \Core\Conf::get('database.config.user', 'root'),
+                    \Core\Conf::get('database.config.pass', '')
+                );
+                $pdo->exec("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
+                self::$singleton = new self($pdo);
+            } catch (\PDOException $e) {
+                return false;
+            }
+        }
+        return self::$singleton;
+    }
+
+    private                     $pdo = null;
+
+    public function             __construct(\PDO $pdo) {
+        $this->pdo = $pdo;
+    }
+
+    public function             close() {
+        $this->pdo = null;
+        self::$singleton = null;
+    }
+
+    public function             __get($k) {
+        return new Collection($this->pdo);
+    }
+}
+

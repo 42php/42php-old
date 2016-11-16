@@ -1,4 +1,13 @@
 <?php
+/**
+ * LICENSE: This source file is subject to version 3.0 of the GPL license
+ * that is available through the world-wide-web at the following URI:
+ * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
+ *
+ * @author      Guillaume Gagnaire <contact@42php.com>
+ * @link        https://www.github.com/42php/42php
+ * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ */
 
 namespace                       Drivers\Database\PDO;
 
@@ -9,8 +18,16 @@ namespace                       Drivers\Database\PDO;
  * @package Drivers\Database\PDO
  */
 class                           Factory implements \Drivers\Database\Factory {
+    /**
+     * @var null|Factory $singleton Contient une instance singleton de la factory
+     */
     private static              $singleton = null;
 
+    /**
+     * Retourne une instance singleton
+     *
+     * @return bool|Factory
+     */
     public static function      getInstance() {
         if (is_null(self::$singleton)) {
             try {
@@ -28,17 +45,33 @@ class                           Factory implements \Drivers\Database\Factory {
         return self::$singleton;
     }
 
+    /**
+     * @var null|\PDO           Contient l'objet PDO
+     */
     private                     $pdo = null;
 
+    /**
+     * Factory constructor.
+     * @param \PDO $pdo
+     */
     public function             __construct(\PDO $pdo) {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Déconnecte PDO
+     */
     public function             close() {
         $this->pdo = null;
         self::$singleton = null;
     }
 
+    /**
+     * Retourne une table
+     *
+     * @param string $k     Nom de la table
+     * @return Collection
+     */
     public function             __get($k) {
         return new Collection($this->pdo);
     }

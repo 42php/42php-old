@@ -1,4 +1,13 @@
 <?php
+/**
+ * LICENSE: This source file is subject to version 3.0 of the GPL license
+ * that is available through the world-wide-web at the following URI:
+ * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
+ *
+ * @author      Guillaume Gagnaire <contact@42php.com>
+ * @link        https://www.github.com/42php/42php
+ * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ */
 
 namespace                       Drivers\Database\PDO;
 
@@ -7,6 +16,9 @@ namespace                       Drivers\Database\PDO;
  * @package Drivers\Database\PDO
  */
 class                           Collection implements \Drivers\Database\Collection {
+    /**
+     * @var null|\PDO           Contient l'objet PDO
+     */
     private                     $pdo = null;
 
     /**
@@ -23,7 +35,7 @@ class                           Collection implements \Drivers\Database\Collecti
      * @param $data
      * @return mixed
      */
-    public function insert($data)
+    public function insert(&$data)
     {
         // TODO: Implement insert() method.
     }
@@ -47,7 +59,7 @@ class                           Collection implements \Drivers\Database\Collecti
      * @param $data
      * @return mixed
      */
-    public function save($data)
+    public function save(&$data)
     {
         // TODO: Implement save() method.
     }

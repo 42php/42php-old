@@ -1,4 +1,13 @@
 <?php
+/**
+ * LICENSE: This source file is subject to version 3.0 of the GPL license
+ * that is available through the world-wide-web at the following URI:
+ * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
+ *
+ * @author      Guillaume Gagnaire <contact@42php.com>
+ * @link        https://www.github.com/42php/42php
+ * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ */
 
 namespace                       Core;
 
@@ -17,11 +26,12 @@ trait                           ConfData {
     /**
      * Permet de lire une valeur
      *
-     * @param string $var         Variable à retourner
-     * @param bool $default       Contenu par défaut à retourner si la variable n'est pas trouvée
-     * @param null|string $expect Permet de retourner la variable que si elle matche
+     * @param string $var           Variable à retourner
+     * @param bool $default         Contenu par défaut à retourner si la variable n'est pas trouvée
+     * @param null|string $expect   Permet de retourner la variable que si elle matche
+     * @param bool|array $forceData Permet de forcer l'utilisation d'un sous-tableau
      *
-     * @return mixed              Le texte à retourner ou la variable par défaut
+     * @return mixed                Le texte à retourner ou la variable par défaut
      */
     public static function 		get($var, $default = false, $expect = null, $forceData = false) {
         if (is_string($expect) && !in_array(substr($expect, 0, 1), ['/', '#']))

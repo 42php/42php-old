@@ -1,0 +1,58 @@
+<?php
+
+namespace                           Core;
+
+/**
+ * Gère la configuration du php.ini
+ *
+ * Class Ini
+ * @package Core
+ */
+class 								Ini {
+    /**
+     * Convertit une taille textuelle en octets (ex: 1M -> 1024)
+     *
+     * @param int $val              La taille
+     *
+     * @return int                  La taille en octets
+     */
+    public static function 			bytes($val) {
+        $val = trim($val);
+        $last = strtolower($val[strlen($val)-1]);
+        switch($last) {
+            case 'g':
+                $val *= 1024;
+                break;
+            case 'm':
+                $val *= 1024;
+                break;
+            case 'k':
+                $val *= 1024;
+                break;
+        }
+
+        return $val;
+    }
+
+    /**
+     * Lit une valeur du fichier php.ini
+     *
+     * @param string $field     Champ à lire
+     *
+     * @return string           Valeur
+     */
+    public static function 			get($field) {
+        return ini_get($field);
+    }
+
+    /**
+     * Alias de Ini::bytes
+     *
+     * @param int $val              La taille
+     *
+     * @return int                  La taille en octets
+     */
+    public static function 			size($val) {
+        return Ini::bytes($val);
+    }
+}
