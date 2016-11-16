@@ -121,4 +121,13 @@ class                           Factory implements \Drivers\Database\Factory {
             return false;
         return $ret->fetch(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Retourne l'identifiant unique du dernier document inséré
+     *
+     * @return string           Dernier identifiant inséré
+     */
+    public function             lastId() {
+        return $this->pdo->lastInsertId();
+    }
 }
