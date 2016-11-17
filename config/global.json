@@ -1,13 +1,5 @@
 {
     "debug": true,
-    "database": {
-        "type": "PDO",
-        "config": {
-            "dsn": "mysql:host=localhost;dbname=42php",
-            "user": "root",
-            "pass": ""
-        }
-    },
     "i18n": {
         "languages": [
             "fr",
@@ -38,5 +30,41 @@
         "css": [],
         "meta": [],
         "bottom": []
+    },
+    "database": {
+        "type": "PDO",
+        "config": {
+            "dsn": "mysql:host=localhost;dbname=42php",
+            "user": "root",
+            "pass": ""
+        }
+    },
+    "payment": {
+        "aLabel": {
+            "driver": "MangoPay",
+            "config": {
+                "apikey": "testtest"
+            }
+        }
+    },
+    "mail": [
+        {
+            "driver": "Sendinblue",
+            "config": {
+                "apikey": "testtest"
+            }
+        },
+        {
+            "driver": "system"
+        }
+    ],
+    "social": {
+        "fb": {
+            "driver": "Facebook",
+            "config": {
+                "key": "testtest",
+                "secret": "tsettset"
+            }
+        }
     }
 }
