@@ -108,6 +108,8 @@ class                           ModelIterator implements \Iterator {
     }
 
     /**
+     * Détermine si le curseur est valide
+     *
      * @return bool
      */
     public function             valid() {

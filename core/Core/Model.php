@@ -64,7 +64,13 @@ trait                           Model {
      * @var null|string $id     ID unique du document
      */
     public                      $id = null;
+    /**
+     * @var bool $full          Détermine si le modèle est complet
+     */
     private                     $full = true;
+    /**
+     * @var bool $isOk          Détermine si le modèle a pu être chargé
+     */
     private                     $isOk = true;
 
     /**
@@ -116,6 +122,11 @@ trait                           Model {
         return $d;
     }
 
+    /**
+     * Affiche une représentation JSON du modèle
+     *
+     * @return string           La représentation JSON du modèle
+     */
     public function             __toString() {
         return json_encode($this->export(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
