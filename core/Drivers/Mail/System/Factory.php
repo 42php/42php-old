@@ -19,12 +19,20 @@ namespace                           Drivers\Mail\System;
  */
 class                               Factory implements \Drivers\Mail\Factory {
     /**
-     * Récupère une instance singleton du driver
+     * @var null|Factory $singleton Contient une instance singleton de la factory
+     */
+    private static                  $singleton = null;
+
+    /**
+     * Retourne une instance singleton
      *
-     * @return mixed
+     * @return Factory
      */
     public static function          getInstance() {
-        // TODO: Implement getInstance() method.
+        if (is_null(self::$singleton)) {
+            self::$singleton = new self();
+        }
+        return self::$singleton;
     }
 
     /**
