@@ -23,7 +23,7 @@ class                           ModelIterator implements \Iterator {
      */
     private                     $position = 0;
     /**
-     * @var mixed $data         Données de l'itérateur : peut être un tableau multi-dimensionnel ou un Iterator
+     * @var mixed $data         Données de l'itérateur : peut être un tableau multi-dimensionnel ou un \Iterator
      */
     private $data = null;
     /**
@@ -54,7 +54,7 @@ class                           ModelIterator implements \Iterator {
     /**
      * ModelIterator constructor.
      *
-     * @param mixed $data       Données de l'itérateur : peut être un tableau multi-dimensionnel ou un Iterator
+     * @param mixed $data       Données de l'itérateur : peut être un tableau multi-dimensionnel ou un \Iterator
      * @param string $modelName Nom du modèle
      * @param mixed $fields     Détermine si le modèle est complet ou pas
      */
@@ -69,7 +69,7 @@ class                           ModelIterator implements \Iterator {
      * Rembobine le curseur
      */
     public function             rewind() {
-        if ($this->data instanceof Iterator)
+        if ($this->data instanceof \Iterator)
             $this->data->rewind();
         else
             $this->position = 0;
@@ -81,7 +81,7 @@ class                           ModelIterator implements \Iterator {
      * @return mixed            Le modèle courant instancié
      */
     public function             current() {
-        if ($this->data instanceof Iterator)
+        if ($this->data instanceof \Iterator)
             return $this->factory($this->data->current());
         return $this->factory($this->data[$this->position]);
     }
@@ -92,7 +92,7 @@ class                           ModelIterator implements \Iterator {
      * @return mixed            La clé courante
      */
     public function             key() {
-        if ($this->data instanceof Iterator)
+        if ($this->data instanceof \Iterator)
             return $this->data->key();
         return $this->position;
     }
@@ -101,7 +101,7 @@ class                           ModelIterator implements \Iterator {
      * Fait avancer le curseur
      */
     public function             next() {
-        if ($this->data instanceof Iterator)
+        if ($this->data instanceof \Iterator)
             $this->curr = $this->data->getNext();
         else
             ++$this->position;
@@ -113,7 +113,7 @@ class                           ModelIterator implements \Iterator {
      * @return bool
      */
     public function             valid() {
-        if ($this->data instanceof Iterator)
+        if ($this->data instanceof \Iterator)
             return $this->data->valid();
         return isset($this->data[$this->position]);
     }
@@ -124,7 +124,7 @@ class                           ModelIterator implements \Iterator {
      * @return int              Le nombre d'éléments dans le curseur
      */
     public function             count() {
-        if ($this->data instanceof Iterator)
+        if ($this->data instanceof \Iterator)
             return $this->data->count();
         return sizeof($this->data);
     }
