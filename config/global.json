@@ -19,7 +19,7 @@
         }
     },
     "cookie": {
-     "domain": ""
+        "domain": ""
     },
     "page": {
         "title": "",
@@ -38,13 +38,5 @@
         "css": [],
         "meta": [],
         "bottom": []
-    },
-    "mail": {
-        "x-sender": "localhost"
-    },
-    "api": {
-        "keys": {
-            "": "web"
-        }
     }
 }
