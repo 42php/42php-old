@@ -23,7 +23,7 @@ $tables = [
         'admin' => 'tinyint(1)',
         'slug' => 'text',
         'lang' => 'text',
-        'photo' => 'text',
+        'photo' => 'blob',
         'email_verified' => 'tinyint(1)'
     ],
     'ProviderAccounts' => [
