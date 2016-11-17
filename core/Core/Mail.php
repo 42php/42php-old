@@ -9,24 +9,15 @@
  * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
  */
 
-namespace                       Drivers\Mail;
+namespace                       Core;
 
 /**
- * Permet d'envoyer un mail
+ * Permet d'envoyer des mails
  *
- * Interface Factory
- * @package Drivers\Mail
+ * Class Mail
+ * @package Core
  */
-interface                       Factory {
-    /**
-     * Récupère une instance singleton du driver
-     *
-     * @param array $parameters Liste des paramètres
-     *
-     * @return mixed
-     */
-    public static function      getInstance($parameters = []);
-
+class                           Mail {
     /**
      * Permet d'envoyer un mail
      *
@@ -39,5 +30,17 @@ interface                       Factory {
      *
      * @return bool                     Le status d'envoi du mail
      */
-    public function             send($to, $from, $subject, $html, $replyTo = false, $attachments = []);
+    public static function      send($to, $from, $subject, $html, $replyTo = false, $attachments = []) {
+        $drivers = Conf::get('mail', []);
+        foreach ($drivers as $driver) {
+            $factory = '\Drivers\Mail\\'. $driver['driver'] .'\\Factory';
+            if (!class_exists($factory))
+                continue;
+            $o = $factory::getInstance(isset($driver['config']) ? $driver['config'] : []);
+            $ret = $o->send($to, $from, $subject, $html, $replyTo, $attachments);
+            if ($ret)
+                return true;
+        }
+        return false;
+    }
 }
