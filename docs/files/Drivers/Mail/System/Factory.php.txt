@@ -26,9 +26,11 @@ class                               Factory implements \Drivers\Mail\Factory {
     /**
      * Retourne une instance singleton
      *
+     * @param array $parameters Liste des paramètres
+     *
      * @return Factory
      */
-    public static function          getInstance() {
+    public static function          getInstance($parameters = []) {
         if (is_null(self::$singleton)) {
             self::$singleton = new self();
         }
