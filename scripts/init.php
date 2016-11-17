@@ -7,8 +7,10 @@ if (!defined('NO_BUFFER'))
 define('ROOT', realpath(__DIR__.'/../'));
 
 /** If HTTP_HOST isn't defined, we are in CLI environnement. */
-if (!isset($_SERVER['HTTP_HOST']))
-    $_SERVER['HTTP_HOST'] = 'cli';
+if (!isset($_SERVER['SERVER_NAME']))
+    $_SERVER['SERVER_NAME'] = 'cli';
+if (!isset($_SERVER['SERVER_PORT']))
+    $_SERVER['SERVER_PORT'] = 80;
 
 /** If we are in CLI environnement, we create a fake REQUEST_URI from the $argv variable. */
 if (!isset($_SERVER['REQUEST_URI'])) {
@@ -16,7 +18,7 @@ if (!isset($_SERVER['REQUEST_URI'])) {
         $p = [];
         foreach ($argv as $i => $a)
             if ($i >= 1) {
-                $p[] = $a;
+                $p[] = str_replace('/', '__separator__', $a);
             }
         $_SERVER['REQUEST_URI'] = '/'.implode('/', $p);
     } else

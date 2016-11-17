@@ -22,7 +22,7 @@ if (function_exists('readline_completion_function')) {
 
 ob_end_flush();
 
-if ($_SERVER['HTTP_HOST'] != 'cli') {
+if ($_SERVER['SERVER_NAME'] != 'cli') {
     echo _t("Ce script doit être exécuté via le bash")."\n";
     die();
 }
@@ -33,6 +33,8 @@ if ($argc < 1) {
     echo _t("Une tâche doit être spécifiée")."\n";
     die();
 }
+
+var_dump($argv);
 
 $task = $argv[0];
 

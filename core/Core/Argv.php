@@ -33,7 +33,7 @@ class 							Argv {
         $url = explode('/', $url[0]);
         foreach ($url as $u)
             if (strlen(trim($u)))
-                $argv[] = trim($u);
+                $argv[] = str_replace('__separator__', '/', trim($u));
         while ($offset--)
             array_shift($argv);
         return $argv;
