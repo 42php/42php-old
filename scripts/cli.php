@@ -34,8 +34,6 @@ if ($argc < 1) {
     die();
 }
 
-var_dump($argv);
-
 $task = $argv[0];
 
 if (!file_exists(ROOT.'/scripts/cli/'.$task.'.php')) {
