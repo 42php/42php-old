@@ -12,9 +12,6 @@ $route = \Core\Argv::route($argv, $routes);
 if (isset($route['route']))
     \Core\Conf::set('route', $route['route']);
 
-\Core\Session::$apiMode = $route && isset($route['conf']['api']) && $route['conf']['api'];
-\Core\Session::init();
-
 include ROOT.'/scripts/i18n.php';
 
 if (!$route) {
