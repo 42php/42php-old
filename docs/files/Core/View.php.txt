@@ -22,12 +22,13 @@ class                       View {
      * Check if a view file exists
      *
      * @param string $viewName View file name. Can have slashes to delimit folders.
+     * @param string $folder   The folder where the view is searched
      *
      * @return bool TRUE if the view file exists
      */
-    public static function  exists($viewName) {
+    public static function  exists($viewName, $folder) {
         Debug::trace();
-        return file_exists(ROOT.'/views/'.$viewName.'.php');
+        return file_exists($folder.$viewName.'.php');
     }
 
     /**
@@ -36,18 +37,19 @@ class                       View {
      * @param string $viewName View file name. Can have slashes to delimit folders.
      * @param array $params Variables to pass to the view.
      * @param bool $generateHeader Defines if this method should render a HTML full body.
+     * @param string $folder The folder where the view is searched
      *
      * @return string The rendered view.
      */
-    private static function renderFile($viewName, $params, $generateHeader) {
+    private static function renderFile($viewName, $params, $generateHeader, $folder) {
         Debug::trace();
-        if (!self::exists($viewName))
+        if (!self::exists($viewName, $folder))
             return '';
         extract($params);
         ob_start();
         if ($generateHeader && file_exists(ROOT.'/views/system/htmlheader.php'))
             include ROOT . '/views/system/htmlheader.php';
-        include ROOT.'/views/'.$viewName.'.php';
+        include $folder.$viewName.'.php';
         if ($generateHeader && file_exists(ROOT.'/views/system/htmlfooter.php'))
             include ROOT . '/views/system/htmlfooter.php';
         $output = ob_get_contents();
@@ -60,12 +62,15 @@ class                       View {
      *
      * @param string $viewName View file name. Can have slashes to delimit folders.
      * @param array $params Variables to pass to the view.
+     * @param string|bool $folder The folder where the view is searched
      *
      * @return string The rendered view.
      */
-    public static function  render($viewName, $params = []) {
+    public static function  render($viewName, $params = [], $folder = false) {
         Debug::trace();
-        return self::renderFile($viewName, $params, true);
+        if ($folder === false)
+            $folder = ROOT.'/views/';
+        return self::renderFile($viewName, $params, true, $folder);
     }
 
     /**
@@ -73,11 +78,14 @@ class                       View {
      *
      * @param $viewName View file name. Can have slashes to delimit folders.
      * @param array $params Variables to pass to the view.
+     * @param string|bool $folder The folder where the view is searched
      *
      * @return string The rendered view.
      */
-    public static function  partial($viewName, $params = []) {
+    public static function  partial($viewName, $params = [], $folder = false) {
         Debug::trace();
-        return self::renderFile($viewName, $params, false);
+        if ($folder === false)
+            $folder = ROOT.'/views/';
+        return self::renderFile($viewName, $params, false, $folder);
     }
 }

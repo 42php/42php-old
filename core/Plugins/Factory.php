@@ -18,6 +18,17 @@ namespace                   Plugins;
  * @package Plugins
  */
 interface                   Factory {
+    /**
+     * Retourne l'instance du plugin
+     *
+     * @return mixed
+     */
     public static function  getInstance();
+
+    /**
+     * Retourne le code HTML généré par le plugin
+     *
+     * @return mixed
+     */
     public function         render();
 }

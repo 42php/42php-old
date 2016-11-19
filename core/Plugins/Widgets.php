@@ -18,5 +18,10 @@ namespace                   Plugins;
  * @package Plugins
  */
 interface                   Widgets {
+    /**
+     * Retourne la liste des widgets pour ce plugin
+     *
+     * @return array
+     */
     public static function  listWidgets();
 }
