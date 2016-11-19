@@ -1,6 +1,6 @@
 # 42php
 
-42php is a develop oriented CMS. It will be shipped with a lot of prod-ready plugins, ergonomic and highly customizable.
+42php is a developer oriented CMS. It will be shipped with a lot of prod-ready plugins, ergonomic and highly customizable.
 
 ## Install
 
