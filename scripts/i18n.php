@@ -2,7 +2,7 @@
 
 if (isset($_GET['setLang']) && in_array($_GET['setLang'], \Core\i18n::$__acceptedLanguages)) {
     \Core\i18n::setLang($_GET['setLang']);
-
+    \Core\Session::save();
     unset($_GET['setLang']);
 
     if (\Core\Conf::get('route') !== false) {
