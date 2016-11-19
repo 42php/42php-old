@@ -63,8 +63,8 @@
             "fb": {
                 "driver": "Facebook",
                 "config": {
-                    "key": "testtest",
-                    "secret": "tsettset"
+                    "key": "650755571722041",
+                    "secret": "d1562ffea395d87fc24f282515553843"
                 }
             }
         }
