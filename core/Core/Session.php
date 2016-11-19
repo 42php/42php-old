@@ -59,7 +59,7 @@ class 							Session {
         /**
          * Clean old sessions
          */
-        Db::getInstance()->Sessions->remove([
+        Db::getInstance()->sessions->remove([
             'expire' => [
                 '$lt' => Db::date()
             ]
@@ -69,7 +69,7 @@ class 							Session {
          * If a session id was transmitted, we try to get data from DB
          */
         if (self::$id !== false) {
-            $d = Db::getInstance()->Sessions->findOne([
+            $d = Db::getInstance()->sessions->findOne([
                 'id' => Db::id(self::$id)
             ]);
             if (!$d) {
@@ -77,8 +77,9 @@ class 							Session {
                 if (self::$apiMode) {
                     Session::set('__apiSpecial.deleteToken', true);
                 }
-            } else
+            } else {
                 self::$__data = $d['data'];
+            }
         }
         self::save();
 
@@ -93,7 +94,7 @@ class 							Session {
     public static function      create() {
         if (self::$id === false) {
             $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$__expire))];
-            self::$id = Db::getInstance()->Sessions->insert($d);
+            self::$id = Db::getInstance()->sessions->insert($d);
             Session::set('__apiSpecial.storeToken', self::$id);
         }
     }
@@ -110,13 +111,15 @@ class 							Session {
          * For the API mode, we can force the session creation with Session::create()
          */
         if (!self::$apiMode && self::$id === false) {
-            self::$id = Db::getInstance()->Sessions->insert($d);
+            self::$id = Db::getInstance()->sessions->insert($d);
         } elseif (self::$id !== false) {
             if (isset($d['id']))
                 unset($d['id']);
-            Db::getInstance()->Sessions->update([
+            Db::getInstance()->sessions->update([
                 'id' => Db::id(self::$id)
-            ], $d);
+            ], [
+                '$set' => $d
+            ]);
         }
         if (!self::$apiMode) {
             if (!headers_sent()) {
@@ -133,7 +136,7 @@ class 							Session {
     public static function      destroy() {
         self::$__data = [];
         if (self::$id !== false) {
-            Db::getInstance()->Sessions->remove([
+            Db::getInstance()->sessions->remove([
                 'id' => Db::id(self::$id)
             ]);
             self::$id = false;
