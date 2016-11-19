@@ -33,15 +33,12 @@ class                               Auth {
     /**
      * Détermine si l'utilisateur est connecté ou pas.
      *
-     * @param string|bool $environnement    Permet de tester si un utilisateur est connecté sur cet environnement
-     *
      * @return bool                 Retourne TRUE si l'utilisateur est connecté, sinon FALSE
      */
-    public static function          logged($environnement = false) {
+    public static function          logged() {
         Debug::trace();
         $uid = Session::get('user.id', false);
-        $db = Session::get('user.database', true);
-        if ($uid !== false && ($db === false || $environnement === false || $db == $environnement))
+        if ($uid !== false)
             return true;
         return false;
     }
@@ -53,25 +50,19 @@ class                               Auth {
      */
     public static function          admin() {
         Debug::trace();
-        return Session::get('user.database', true) === false ||                // Si l'utilisateur est un AdminUser
-        Session::get('user.admin', false);
+        return Session::get('user.admin', false);
     }
 
     /**
      * Retourne une instance de l'User connecté.
      *
-     * @return AdminUser|bool|User  Retourne l'utilisateur si il est connecté, sinon FALSE
+     * @return bool|\User  Retourne l'utilisateur si il est connecté, sinon FALSE
      */
     public static function          user() {
         Debug::trace();
         if (!Auth::logged())
             return false;
-        $db = Session::get('user.database', false);
-        if (!$db)
-            return new AdminUser(Session::get('user.id', ''));
-        User::$environnement = $db;
-        $user = new User(Session::get('user.id', ''));
-        User::$environnement = false;
+        $user = new \User(Session::get('user.id', ''));
         return $user;
     }
 
