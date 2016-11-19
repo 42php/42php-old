@@ -1,9 +1,23 @@
 {
-  "root": {
+  "home": {
     "controller": "StaticController@home",
     "routes": {
       "fr": "/fr",
       "en": "/en"
+    }
+  },
+  "login": {
+    "controller": "AuthController@login",
+    "routes": {
+      "fr": "/fr/connexion",
+      "en": "/en/login"
+    }
+  },
+  "logout": {
+    "controller": "AuthController@logout",
+    "routes": {
+      "fr": "/fr/deconnexion",
+      "en": "/en/logout"
     }
   },
   "api": {
