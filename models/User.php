@@ -16,7 +16,7 @@ class                       User {
     use \Core\Model;
 
     /** @var string $__collection Détermine la collection à utiliser */
-    public static           $__collection = 'Users';
+    public static           $__collection = 'users';
 
     /** @var array Données par défaut des utilisateurs */
     public                  $__structure = [
