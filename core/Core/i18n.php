@@ -65,7 +65,11 @@ namespace                            Core {
             self::$__defaultLanguage = Conf::get('i18n.default');
 
             if (Auth::uid()) {
-                Conf::set('lang', (isset(Auth::user()['lang']) && in_array(Auth::user()['lang'], self::$__acceptedLanguages)) ? Auth::user()['lang'] : self::$__defaultLanguage);
+                $user = Auth::user();
+                $lang = $user->get('lang', self::$__defaultLanguage);
+                if (!in_array($lang, self::$__acceptedLanguages))
+                    $lang = self::$__defaultLanguage;
+                Conf::set('lang', $lang);
             } else {
                 if (Session::get('lang', false))
                     Conf::set('lang', Session::get('lang', false));
@@ -74,7 +78,6 @@ namespace                            Core {
                         Conf::set('lang', $_GET['lang']);
                         Session::set('lang', $_GET['lang']);
                     } else {
-                        // Based on browser
                         $languages = explode(',', isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']) : '');
                         if (in_array($languages[0], self::$__acceptedLanguages))
                             Conf::set('lang', $languages[0]);
