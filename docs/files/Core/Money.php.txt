@@ -23,6 +23,7 @@ class                       Money {
      * @return float                Montant arrondi à 2 chiffres après la virgule
      */
     public static function  round($amount) {
+        Debug::trace();
         return round(floatval(str_replace(',', '.', $amount)), 2);
     }
 
@@ -35,6 +36,7 @@ class                       Money {
      * @return float            Pourcentage de réduction
      */
     public static function  discountPercent($full, $semi) {
+        Debug::trace();
         $full = self::round($full);
         $semi = self::round($semi);
 

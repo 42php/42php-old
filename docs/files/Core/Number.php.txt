@@ -28,6 +28,7 @@ class                               Number {
      * @return float                Pourcentage
      */
     public static function          percent($full, $minus, $round = 2) {
+        Debug::trace();
         return round($minus / $full * 100, $round);
     }
 }

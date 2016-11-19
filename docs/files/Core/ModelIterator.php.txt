@@ -124,6 +124,7 @@ class                           ModelIterator implements \Iterator {
      * @return int              Le nombre d'éléments dans le curseur
      */
     public function             count() {
+        Debug::trace();
         if ($this->data instanceof \Iterator)
             return $this->data->count();
         return sizeof($this->data);
@@ -135,6 +136,7 @@ class                           ModelIterator implements \Iterator {
      * @return array            Les données des modèles
      */
     public function             export() {
+        Debug::trace();
         $ret = [];
         foreach ($this->data as $d) {
             $d = $this->factory($d);

@@ -55,6 +55,7 @@ class 				                Upload {
      * @return bool|string          Retourne le chemin du fichier uploadé, sinon FALSE si l'upload a échoué.
      */
     public static function 	        job($field, $isData = false, $extensions = []) {
+        Debug::trace();
         $u = new Upload($field, $isData);
         if ($u->error() != UPLOAD_ERR_OK)
             return false;
@@ -84,6 +85,7 @@ class 				                Upload {
      * @param bool $isData          Détermine si oui, ou non, la valeur dans $field est l'entrée du tableau.
      */
     public function 		        __construct($field, $isData = false) {
+        Debug::trace();
         if (!$isData)
             $file = $_FILES[$field];
         else
@@ -110,6 +112,7 @@ class 				                Upload {
      * @param string $ext           Extension
      */
     public function 		        allowExtension($ext) {
+        Debug::trace();
         $this->allowedExtensions[] = $ext;
         $this->allowedExtensions = array_unique($this->allowedExtensions);
     }
@@ -120,6 +123,7 @@ class 				                Upload {
      * @param array $arr            Liste des extensions
      */
     public function 		        allowExtensions($arr = []) {
+        Debug::trace();
         $this->allowedExtensions = array_unique(array_merge($this->allowedExtensions, $arr));
     }
 
@@ -129,6 +133,7 @@ class 				                Upload {
      * @param int $maxSize          Taille maximale autorisée
      */
     public function 		        setMaxSize($maxSize) {
+        Debug::trace();
         $this->maxSize = $maxSize;
     }
 
@@ -138,6 +143,7 @@ class 				                Upload {
      * @return bool                 Détermine si oui, ou non, le fichier a bien été uploadé.
      */
     public function 		        uploaded() {
+        Debug::trace();
         return $this->uploaded;
     }
 
@@ -147,6 +153,7 @@ class 				                Upload {
      * @return int                  Code d'erreur
      */
     public function 		        error() {
+        Debug::trace();
         return $this->error;
     }
 
@@ -156,6 +163,7 @@ class 				                Upload {
      * @return string               Message d'erreur.
      */
     public function 		        errorMsg() {
+        Debug::trace();
         switch ($this->error) {
             case UPLOAD_ERR_OK:
                 return '';
@@ -193,6 +201,7 @@ class 				                Upload {
      * @return string               Nom du fichier
      */
     public function 		        filename() {
+        Debug::trace();
         return $this->filename;
     }
 
@@ -202,6 +211,7 @@ class 				                Upload {
      * @return int                  Taille
      */
     public function 		        size() {
+        Debug::trace();
         return $this->size;
     }
 
@@ -211,6 +221,7 @@ class 				                Upload {
      * @return string               Extension
      */
     public function 		        extension() {
+        Debug::trace();
         return $this->extension;
     }
 
@@ -220,6 +231,7 @@ class 				                Upload {
      * @return bool                 TRUE si le fichier peut être uploadé, sinon FALSE.
      */
     private function		        allowed() {
+        Debug::trace();
         // Check size
         if ($this->size > $this->maxSize) {
             $this->error = UPLOAD_ERR_FORM_SIZE;
@@ -238,6 +250,7 @@ class 				                Upload {
      * @return bool|string          Si le fichier peut être uploadé, retourne son contenu en base64, sinon FALSE.
      */
     public function 		        base64() {
+        Debug::trace();
         if ($this->allowed())
             return base64_encode(file_get_contents($this->tmpName));
         return false;
@@ -253,6 +266,7 @@ class 				                Upload {
      *                                  dossier de destination.
      */
     public function 		        register($filename = false) {
+        Debug::trace();
         if (!$this->allowed())
             return false;
         if (!$filename)

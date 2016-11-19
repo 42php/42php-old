@@ -24,6 +24,7 @@ class                           Countries {
      * @return array            La liste des pays
      */
     public static function      getList() {
+        Debug::trace();
         return [
             'af' => _t('Afghanistan'),
             'za' => _t('Afrique du Sud'),

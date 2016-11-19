@@ -26,6 +26,7 @@ class 								Ini {
      * @return int                  La taille en octets
      */
     public static function 			bytes($val) {
+        Debug::trace();
         $val = trim($val);
         $last = strtolower($val[strlen($val)-1]);
         switch($last) {
@@ -51,6 +52,7 @@ class 								Ini {
      * @return string           Valeur
      */
     public static function 			get($field) {
+        Debug::trace();
         return ini_get($field);
     }
 
@@ -62,6 +64,7 @@ class 								Ini {
      * @return int                  La taille en octets
      */
     public static function 			size($val) {
+        Debug::trace();
         return Ini::bytes($val);
     }
 }

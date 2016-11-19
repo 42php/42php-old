@@ -25,6 +25,7 @@ class                       Regex implements \Drivers\Database\Regex {
      * @return string       L'expression régulière formattée
      */
     public static function  format($regex) {
+        \Core\Debug::trace();
         $delimiter = substr($regex, 0, 1);
         $last = strrpos($regex, $delimiter);
         return substr($regex, 1, $last - 1);

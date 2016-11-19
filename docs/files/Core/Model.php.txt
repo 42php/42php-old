@@ -33,6 +33,7 @@ trait                           Model {
      * @return Model            Le modèle instancié
      */
     public static function      __getInstance($id) {
+        Debug::trace();
         if (!isset(self::$cache[$id]))
             self::$cache[$id] = new self($id);
         return self::$cache[$id];
@@ -44,6 +45,7 @@ trait                           Model {
      * @return bool             Détermine si le modèle a bien été stocké
      */
     public function             store() {
+        Debug::trace();
         if (is_null($this->id))
             return false;
         self::$cache[$this->id] = $this;
@@ -56,6 +58,7 @@ trait                           Model {
      * @return bool
      */
     public static function      cleanCache() {
+        Debug::trace();
         self::$cache = [];
         return true;
     }
@@ -81,6 +84,7 @@ trait                           Model {
      * @param bool $full        Détermine si le document est entier ou pas
      */
     public function             __construct($id = null, $d = false, $full = true) {
+        Debug::trace();
         $this->full = $full;
         if (isset($this->__structure))
             $this->__data = $this->__structure;
@@ -104,6 +108,7 @@ trait                           Model {
      * @return bool
      */
     public function             ok() {
+        Debug::trace();
         return $this->isOk;
     }
 
@@ -113,6 +118,7 @@ trait                           Model {
      * @return array
      */
     public function             export() {
+        Debug::trace();
         $d = $this->__data;
         $d['id'] = $this->id;
 
@@ -128,6 +134,7 @@ trait                           Model {
      * @return string           La représentation JSON du modèle
      */
     public function             __toString() {
+        Debug::trace();
         return json_encode($this->export(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
@@ -137,6 +144,7 @@ trait                           Model {
      * @return mixed
      */
     public static function      collection() {
+        Debug::trace();
         return Db::getInstance()->__get(self::$__collection);
     }
 
@@ -145,6 +153,7 @@ trait                           Model {
      * @param $id
      */
     public function             load($id) {
+        Debug::trace();
         $this->isOk = false;
         $item = self::collection()->findOne([
             '_id' => Db::id($id)
@@ -161,6 +170,7 @@ trait                           Model {
      * Sauvegarde le modèle en base de données.
      */
     public function             save() {
+        Debug::trace();
         $d = $this->__data;
         if (!is_null($this->id))
             $d['id'] = Db::id($this->id);
@@ -185,6 +195,7 @@ trait                           Model {
      * Supprime les données du modèle en base.
      */
     public function             remove() {
+        Debug::trace();
         if (is_null($this->id))
             return;
         if (method_exists($this, '__onRemove'))
@@ -201,6 +212,7 @@ trait                           Model {
      * @return self
      */
     public function             duplicate() {
+        Debug::trace();
         $d = $this->__data;
         if (isset($d['id']))
             unset($d['id']);
@@ -216,6 +228,7 @@ trait                           Model {
      * @return bool|self        Le modèle instancié, ou false
      */
     public static function      findOne($criteria = [], $fields = false) {
+        Debug::trace();
         $item = self::collection()->findOne($criteria, $fields);
         if ($item)
             return new self(null, $item, $fields === false);
@@ -234,6 +247,7 @@ trait                           Model {
      * @return ModelIterator    Curseur de lecture
      */
     public static function      find($criteria = [], $fields = [], $order = false, $skip = false, $limit = false) {
+        Debug::trace();
         $items = self::collection()->find($criteria, $fields, $order, $skip, $limit);
 
         return new ModelIterator($items, get_called_class(), $fields);
@@ -249,6 +263,7 @@ trait                           Model {
      * @return int              Nombre de documents affectés
      */
     public static function      update($criteria = [], $new_object = [], $multiple = false) {
+        Debug::trace();
         return self::collection()->update($criteria, $new_object, ['multiple' => $multiple]);
     }
 }

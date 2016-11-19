@@ -28,6 +28,7 @@ class				        Dir {
      * @return array                Liste des fichiers
      */
     public static function	read($path, $recursive = false, $limit = '') {
+        Debug::trace();
         $list = array();
         $path = realpath($path);
         if ($handle = opendir($path)) {

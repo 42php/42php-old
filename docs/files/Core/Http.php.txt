@@ -23,6 +23,7 @@ class                       Http {
      * @param string $charset
      */
     public static function  setContentType($type = 'text/html', $charset = 'utf-8') {
+        Debug::trace();
         header("Content-Type: $type; charset=$charset");
     }
 
@@ -34,6 +35,7 @@ class                       Http {
      * @return int|mixed|null
      */
     public static function  responseCode($code = NULL) {
+        Debug::trace();
         if ($code !== NULL) {
             switch ($code) {
                 case 100: $text = 'Continue'; break;
@@ -90,6 +92,7 @@ class                       Http {
      * Throw a 404 Not Found error.
      */
     public static function  notFound() {
+        Debug::trace();
         self::responseCode(404);
         if (View::exists('404'))
             echo View::render('404');
@@ -103,6 +106,7 @@ class                       Http {
      * @return array All the request HTTP headers.
      */
     public static function  headers() {
+        Debug::trace();
         $headers = [];
         foreach ($_SERVER as $name => $value) {
             if (substr($name, 0, 5) == 'HTTP_') {
@@ -118,6 +122,7 @@ class                       Http {
      * @return string The base URL.
      */
     public static function  baseUrl() {
+        Debug::trace();
         $pageUrl = 'http';
         if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {
             $pageUrl .= "s";
@@ -137,6 +142,7 @@ class                       Http {
      * @return string
      */
     public static function  url() {
+        Debug::trace();
         $pageUrl = self::baseUrl();
         $pageUrl .= $_SERVER['REQUEST_URI'];
         return $pageUrl;

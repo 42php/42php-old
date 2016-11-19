@@ -24,6 +24,7 @@ class				Redirect {
      * @param string $to    Destination
      */
     public static function	permanent($to) {
+        Debug::trace();
         header('HTTP/1.1 301 Moved Permanently', false, 301);
         self::http($to);
     }
@@ -34,6 +35,7 @@ class				Redirect {
      * @param string $to    Destination
      */
     public static function	http($to) {
+        Debug::trace();
         Session::save();
         header("Location: $to");
         die();

@@ -24,6 +24,7 @@ class                               Db {
      * @return mixed                L'instance de base de données
      */
     public static function          getInstance() {
+        Debug::trace();
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Factory';
         if (class_exists($factory))
             return $factory::getInstance();
@@ -38,6 +39,7 @@ class                               Db {
      * @return mixed                La date formattée
      */
     public static function          date($timestamp = false, $withTime = true) {
+        Debug::trace();
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Date';
         if (class_exists($factory))
             return $factory::format($timestamp === false ? time() : $timestamp, $withTime);
@@ -51,6 +53,7 @@ class                               Db {
      * @return mixed                L'identifiant formatté
      */
     public static function          id($id = false) {
+        Debug::trace();
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Id';
         if (class_exists($factory))
             return $factory::format($id);
@@ -64,6 +67,7 @@ class                               Db {
      * @return mixed            L'expression régulière formattée
      */
     public static function          regex($regex) {
+        Debug::trace();
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Regex';
         if (class_exists($factory))
             return $factory::format($regex);

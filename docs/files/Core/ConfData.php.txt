@@ -34,6 +34,7 @@ trait                           ConfData {
      * @return mixed                Le texte à retourner ou la variable par défaut
      */
     public static function 		get($var, $default = false, $expect = null, $forceData = false) {
+        Debug::trace();
         if (is_string($expect) && !in_array(substr($expect, 0, 1), ['/', '#']))
             $expect = '/'.preg_quote($expect, '/').'/';
         if ($var == '')
@@ -112,6 +113,7 @@ trait                           ConfData {
      * @param mixed $v            Valeur
      */
     public static function 		set($k, $v) {
+        Debug::trace();
         $k = explode('.', $k);
         self::$__data = self::recursiveSet($k, $v, self::$__data);
     }
@@ -147,6 +149,7 @@ trait                           ConfData {
      * @param mixed $v      Valeur
      */
     public static function 		append($k, $v) {
+        Debug::trace();
         $k = explode('.', $k);
         self::$__data = self::recursiveAppend($k, $v, self::$__data);
     }
@@ -180,6 +183,7 @@ trait                           ConfData {
      * @return int          La taille du tableau
      */
     public static function      size($k) {
+        Debug::trace();
         $el = self::get($k, []);
         if (!is_array($el))
             return 0;
@@ -192,6 +196,7 @@ trait                           ConfData {
      * @param string $k     Clé
      */
     public static function 		remove($k) {
+        Debug::trace();
         $k = explode('.', $k);
         self::$__data = self::recursiveRemove($k, self::$__data);
     }
@@ -204,6 +209,7 @@ trait                           ConfData {
      * @param null $data            Force l'utilisation d'un tableau spécifique en lieu et place du tableau interne
      */
     public static function 		values($callback, $prefix = false, $data = null) {
+        Debug::trace();
         if (is_null($data))
             $data = self::$__data;
 

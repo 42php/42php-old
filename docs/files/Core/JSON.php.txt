@@ -34,6 +34,7 @@ class 							JSON {
      * @return null|object      Objet JSON ou NULL.
      */
     public static function      toObject($url) {
+        Debug::trace();
         return json_decode(self::_get($url), false);
     }
 
@@ -45,6 +46,7 @@ class 							JSON {
      * @return null|array       Objet JSON sous forme de tableau associatif, ou NULL.
      */
     public static function      toArray($url) {
+        Debug::trace();
         return json_decode(self::_get($url), true);
     }
 
@@ -57,6 +59,7 @@ class 							JSON {
      * @return array|object|null Objet JSON décodé
      */
     public static function      parse($url, $asObject = false) {
+        Debug::trace();
         return $asObject ? self::toObject($url) : self::toArray($url);
     }
 
@@ -67,6 +70,7 @@ class 							JSON {
      * @return bool             TRUE si la chaîne est du JSON
      */
     public static function      is($string) {
+        Debug::trace();
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }

@@ -26,6 +26,7 @@ class                       View {
      * @return bool TRUE if the view file exists
      */
     public static function  exists($viewName) {
+        Debug::trace();
         return file_exists(ROOT.'/views/'.$viewName.'.php');
     }
 
@@ -39,6 +40,7 @@ class                       View {
      * @return string The rendered view.
      */
     private static function renderFile($viewName, $params, $generateHeader) {
+        Debug::trace();
         if (!self::exists($viewName))
             return '';
         extract($params);
@@ -62,6 +64,7 @@ class                       View {
      * @return string The rendered view.
      */
     public static function  render($viewName, $params = []) {
+        Debug::trace();
         return self::renderFile($viewName, $params, true);
     }
 
@@ -74,6 +77,7 @@ class                       View {
      * @return string The rendered view.
      */
     public static function  partial($viewName, $params = []) {
+        Debug::trace();
         return self::renderFile($viewName, $params, false);
     }
 }

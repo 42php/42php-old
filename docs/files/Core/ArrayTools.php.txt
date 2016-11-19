@@ -26,6 +26,7 @@ class                           ArrayTools {
      * @return bool             TRUE if the array is associative, else FALSE.
      */
     public static function      isAssoc($arr) {
+        Debug::trace();
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
 
@@ -39,6 +40,7 @@ class                           ArrayTools {
      * @return array            The merged array.
      */
     public static function      recursiveMerge($arr1, $arr2, $exclude = '') {
+        Debug::trace();
         $ret = $arr1;
         if (!is_array($ret))
             return $arr2;
@@ -66,6 +68,7 @@ class                           ArrayTools {
      * @return array            The array
      */
     public static function      getAsArray($val) {
+        Debug::trace();
         if (!is_array($val))
             $val = [$val];
         return $val;

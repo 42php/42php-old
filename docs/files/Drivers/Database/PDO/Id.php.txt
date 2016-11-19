@@ -25,6 +25,7 @@ class                       Id implements \Drivers\Database\Id {
      * @return int          L'ID standardisé
      */
     public static function  format($id) {
+        \Core\Debug::trace();
         return intval($id);
     }
 }
