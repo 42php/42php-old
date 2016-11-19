@@ -27,6 +27,7 @@ class 								Hash {
      * @return string               Chaîne blowfish
      */
     public static function 			blowfish($input, $rounds = 7) {
+        Debug::trace();
         $salt = "";
         $salt_chars = array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9));
         for ($i = 0; $i < 22; $i++) {
@@ -44,6 +45,7 @@ class 								Hash {
      * @return bool                 TRUE si la chaîne est similaire, sinon FALSE
      */
     public static function 			same($entered, $original) {
+        Debug::trace();
         return crypt($entered, $original) == $original;
     }
 }

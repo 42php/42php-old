@@ -32,6 +32,7 @@ class                           Phone {
      *                          FALSE si le numéro est invalide
      */
     public static function      getType($phone, $country = 'FR') {
+        Debug::trace();
         try {
             $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
             $number = $phoneUtil->parse($phone, $country);
@@ -55,6 +56,7 @@ class                           Phone {
      * @return bool|string      Numéro nettoyé (au format international) ou FALSE si invalide
      */
     public static function      clean($phone, $country = 'FR') {
+        Debug::trace();
         try {
             $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
             $number = $phoneUtil->parse($phone, $country);
@@ -75,6 +77,7 @@ class                           Phone {
      * @return bool|string      Numéro nettoyé (au format national) ou FALSE si invalide
      */
     public static function      national($phone, $country = 'FR') {
+        Debug::trace();
         try {
             $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
             $number = $phoneUtil->parse($phone, $country);

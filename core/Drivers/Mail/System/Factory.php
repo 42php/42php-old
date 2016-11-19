@@ -31,6 +31,7 @@ class                               Factory implements \Drivers\Mail\Factory {
      * @return Factory
      */
     public static function          getInstance($parameters = []) {
+        \Core\Debug::trace();
         if (is_null(self::$singleton)) {
             self::$singleton = new self();
         }
@@ -50,6 +51,7 @@ class                               Factory implements \Drivers\Mail\Factory {
      * @return bool                 Le status d'envoi du mail
      */
     public function                 send($to, $from, $subject, $html, $replyTo = false, $attachments = []) {
+        \Core\Debug::trace();
         if ($replyTo === false)
             $replyTo = $from;
 

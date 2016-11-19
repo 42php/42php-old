@@ -51,6 +51,7 @@ class                           Collection implements \Drivers\Database\Collecti
      * @return string           ID du document inséré
      */
     public function             insert(&$data) {
+        \Core\Debug::trace();
         $query = MongoToSQL::insert($this->table, $data);
         $this->handler->exec($query);
         $data['id'] = $this->handler->lastId();
@@ -66,6 +67,7 @@ class                           Collection implements \Drivers\Database\Collecti
      * @return mixed            Nombre de documents modifiés
      */
     public function             update($clause = [], $data = [], $options = []) {
+        \Core\Debug::trace();
         $limit = 1;
         if (isset($option['multiple']) && $option['multiple'])
             $limit = false;
@@ -80,6 +82,7 @@ class                           Collection implements \Drivers\Database\Collecti
      * @return mixed            Identifiant du document
      */
     public function             save(&$data) {
+        \Core\Debug::trace();
         if (isset($data['id'])) {
             $d = $data;
             unset($d['id']);
@@ -105,6 +108,7 @@ class                           Collection implements \Drivers\Database\Collecti
      * @return array|bool       Liste des documents
      */
     public function             find($clause = [], $fields = [], $sort = [], $skip = false, $limit = false) {
+        \Core\Debug::trace();
         $query = MongoToSQL::select($this->table, $clause, $fields, $sort, $skip, $limit);
         $ret = $this->handler->query($query);
         if (!$ret)
@@ -123,6 +127,7 @@ class                           Collection implements \Drivers\Database\Collecti
      * @return mixed            Premier document trouvé
      */
     public function             findOne($clause = [], $fields = []) {
+        \Core\Debug::trace();
         $ret = $this->find($clause, $fields, [], false, 1);
         if ($ret && sizeof($ret)) {
             return $ret[0];
@@ -138,6 +143,7 @@ class                           Collection implements \Drivers\Database\Collecti
      * @return int              Nombre de documents supprimés
      */
     public function             remove($clause = [], $options = []) {
+        \Core\Debug::trace();
         $limit = false;
         if (isset($options['justOne']) && $options['justOne'])
             $limit = 1;

@@ -26,6 +26,7 @@ class                           Date {
      * @return string       Le nom du mois en textuel
      */
     public static function      month($nb) {
+        Debug::trace();
         $months = [
             _t("Janvier"),
             _t("Février"),
@@ -54,6 +55,7 @@ class                           Date {
      * @return string               La date
      */
     public static function      textual($date, $hourmin = false, $sec = false) {
+        Debug::trace();
         if (!is_int($date))
             $date = strtotime($date);
 
@@ -95,6 +97,7 @@ class                           Date {
      * @return string           Date formattée en ISO
      */
     public static function      toISO($date) {
+        Debug::trace();
         $date = str_replace(['T', 'Z'], ' ', $date);
         $date = explode(' ', $date);
         if (sizeof($date) == 1)

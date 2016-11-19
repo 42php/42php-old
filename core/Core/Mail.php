@@ -31,6 +31,7 @@ class                           Mail {
      * @return bool                     Le status d'envoi du mail
      */
     public static function      send($to, $from, $subject, $html, $replyTo = false, $attachments = []) {
+        Debug::trace();
         $drivers = Conf::get('mail', []);
         foreach ($drivers as $driver) {
             $factory = '\Drivers\Mail\\'. $driver['driver'] .'\\Factory';

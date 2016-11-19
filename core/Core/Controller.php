@@ -43,6 +43,7 @@ class 							Controller {
      * @return bool             TRUE si le controlleur existe.
      */
     public static function      exists($name) {
+        Debug::trace();
         list($c, $m) = explode('@', $name);
         return class_exists($c);
     }
@@ -56,6 +57,7 @@ class 							Controller {
      * @return string           Contenu généré par le controlleur
      */
     public static function 		run($name, $params = []) {
+        Debug::trace();
         global $argc, $argv;
 
         list($c, $m) = explode('@', $name);

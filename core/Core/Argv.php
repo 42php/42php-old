@@ -27,6 +27,7 @@ class 							Argv {
      * @return array        Le tableau d'arguments
      */
     public static function 		parse($url, $offset = 0) {
+        Debug::trace();
         $argv = array();
         $url = urldecode($url);
         $url = explode('?', $url);
@@ -48,6 +49,7 @@ class 							Argv {
      * @return array           Le résultat
      */
     private static function 	routeMatch($url, $route) {
+        Debug::trace();
         $tmp = array();
         preg_match_all('/(\{[a-z0-9\-\_]+\})/i', $route, $matches);
         foreach ($matches[0] as $k)
@@ -88,6 +90,7 @@ class 							Argv {
      * @return array|bool               Retourne la route sélectionnée, ou false si aucune route ne matche
      */
     public static function 		route($argv, $routes, $fieldToReturn = 'controller') {
+        Debug::trace();
         if (!sizeof($argv))
             $url = '/';
         else
@@ -134,6 +137,7 @@ class 							Argv {
      * @return array|bool               Retourne la route sélectionnée, ou false si aucune route ne matche
      */
     public static function 		globalRoute($argv, $routes, $fieldToReturn = 'controller') {
+        Debug::trace();
         if (!sizeof($argv))
             $url = '/';
         else
@@ -176,6 +180,7 @@ class 							Argv {
      * @return string               L'URL absolue
      */
     public static function 		createUrl($name, $params = [], $lang = false) {
+        Debug::trace();
         if (!$lang)
             $lang = Conf::get('lang');
         $routes = json_decode(file_get_contents(ROOT.'/config/routes.json'), true);

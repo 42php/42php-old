@@ -34,6 +34,7 @@ trait                           InstantiatedConfData {
      * @return mixed            Le texte à retourner ou la variable par défaut
      */
     public function 		    get($var, $default = false, $expect = null, $forceData = false) {
+        Debug::trace();
         if ($expect && is_string($expect) && !in_array(substr($expect, 0, 1), ['/', '#']))
             $expect = '/'.preg_quote($expect, '/').'/';
         $els = explode('.', $var);
@@ -115,6 +116,7 @@ trait                           InstantiatedConfData {
      * @param mixed $v            Valeur
      */
     public function 		        set($k, $v) {
+        Debug::trace();
         $k = explode('.', $k);
         $this->__data = $this->recursiveSet($k, $v, $this->__data);
     }
@@ -150,6 +152,7 @@ trait                           InstantiatedConfData {
      * @param mixed $v      Valeur
      */
     public function 		        append($k, $v) {
+        Debug::trace();
         $k = explode('.', $k);
         $this->__data = $this->recursiveAppend($k, $v, $this->__data);
     }
@@ -183,6 +186,7 @@ trait                           InstantiatedConfData {
      * @return int          La taille du tableau
      */
     public function                 size($k) {
+        Debug::trace();
         $el = self::get($k, []);
         if (!is_array($el))
             return 0;
@@ -195,6 +199,7 @@ trait                           InstantiatedConfData {
      * @param string $k     Clé
      */
     public function 		        remove($k) {
+        Debug::trace();
         $k = explode('.', $k);
         $this->__data = $this->recursiveRemove($k, $this->__data);
     }
@@ -207,6 +212,7 @@ trait                           InstantiatedConfData {
      * @param null $data            Force l'utilisation d'un tableau spécifique en lieu et place du tableau interne
      */
     public function 		        values($callback, $prefix = false, $data = null) {
+        Debug::trace();
         if (is_null($data))
             $data = $this->__data;
 

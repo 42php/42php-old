@@ -39,6 +39,7 @@ class 							Session {
      * Initialisation de la session
      */
     public static function      init() {
+        Debug::trace();
         /**
          * If it's cookie mode (for web)
          */
@@ -92,6 +93,7 @@ class 							Session {
      * Création d'une session.
      */
     public static function      create() {
+        Debug::trace();
         if (self::$id === false) {
             $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$__expire))];
             self::$id = Db::getInstance()->sessions->insert($d);
@@ -103,6 +105,7 @@ class 							Session {
      * Enregistrement de la session en base
      */
     public static function      save() {
+        Debug::trace();
         $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$__expire))];
         /**
          * If no active session, create a new session in DB, or update data in DB
@@ -134,6 +137,7 @@ class 							Session {
      * Destruction de la session
      */
     public static function      destroy() {
+        Debug::trace();
         self::$__data = [];
         if (self::$id !== false) {
             Db::getInstance()->sessions->remove([

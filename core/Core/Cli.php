@@ -24,6 +24,7 @@ class                           Cli {
      * @return bool
      */
     public static function      is() {
+        Debug::trace();
         return $_SERVER['HTTP_HOST'] == 'cli';
     }
 
@@ -31,6 +32,7 @@ class                           Cli {
      * Force le système à croire que le script courant est exécuté depuis le bash
      */
     public static function      force() {
+        Debug::trace();
         $_SERVER['HTTP_HOST'] = 'cli';
     }
 }

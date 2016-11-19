@@ -28,6 +28,7 @@ class 							Conf {
      * @return bool             TRUE si la configuration a bien été chargée, sinon FALSE.
      */
     public static function 		load($file) {
+        Debug::trace();
         if (!file_exists($file))
             return false;
 

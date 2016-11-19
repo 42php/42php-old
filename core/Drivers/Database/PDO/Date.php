@@ -26,6 +26,7 @@ class                       Date implements \Drivers\Database\Date {
      * @return string               La date formattée Y-m-d H:i:s
      */
     public static function  format($timestamp, $withTime = true) {
+        \Core\Debug::trace();
         if ($withTime)
             return date('Y-m-d H:i:s', $timestamp);
         return date('Y-m-d', $timestamp);

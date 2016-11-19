@@ -30,6 +30,7 @@ class                               MongoToSQL {
      * @return string               Requête SQL
      */
     public static function          select($table, $query = [], $fields = [], $sort = [], $skip = false, $limit = false) {
+        \Core\Debug::trace();
         $sql = 'SELECT ' . (sizeof($fields) ? '`'.implode('`, `', $fields).'`' : '*') . ' FROM `' . $table . '` ';
         if (sizeof($query))
             $sql .= 'WHERE ' . self::where($query) . ' ';
@@ -54,6 +55,7 @@ class                               MongoToSQL {
      * @return bool|string          Requête SQL
      */
     public static function          insert($table, $data = [], $multiple = false) {
+        \Core\Debug::trace();
         if (!sizeof($data))
             return false;
         if (!$multiple)
@@ -92,6 +94,7 @@ class                               MongoToSQL {
      * @return bool|string          Requête SQL
      */
     public static function          update($table, $values = [], $query = [], $limit = false) {
+        \Core\Debug::trace();
         if (!sizeof($values))
             return false;
 
@@ -154,6 +157,7 @@ class                               MongoToSQL {
      * @return string               Requête SQL
      */
     public static function          delete($table, $query = [], $limit = false) {
+        \Core\Debug::trace();
         $sql = 'DELETE FROM `' . $table . '` ';
         if (sizeof($query))
             $sql .= 'WHERE ' . self::where($query) . ' ';
@@ -237,6 +241,7 @@ class                               MongoToSQL {
      * @return string               Champ ORDER BY
      */
     public static function          sort($sort = []) {
+        \Core\Debug::trace();
         $sql = [];
         foreach ($sort as $k => $v) {
             $sql[] = '`' . $k . '` ' . ($v ? 'ASC' : 'DESC');
@@ -251,6 +256,7 @@ class                               MongoToSQL {
      * @return array|string|object  Chaîne traitée
      */
     public static function      fromDb($data) {
+        \Core\Debug::trace();
         if (substr($data, 0, 20) == '42php.db.json.array:') {
             return json_decode(substr($data, 20), true);
         }
@@ -266,6 +272,7 @@ class                               MongoToSQL {
      * @return string           Résultat
      */
     public static function      toDb($data) {
+        \Core\Debug::trace();
         if (is_array($data))
             $data = '42php.db.json.array:'.json_encode($data);
         if (is_object($data))

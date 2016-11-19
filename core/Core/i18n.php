@@ -21,9 +21,6 @@ namespace                            Core {
         /** @var string $__defaultLanguage Langue par défaut */
         public static $__defaultLanguage = 'fr';
 
-        /** @var string $__sessionKey Clé en session pour stocker la langue */
-        private static $__sessionKey = 'lang';
-
         /** @var array $__acceptedLanguages Langues disponibles */
         public static $__acceptedLanguages = [];
 
@@ -32,7 +29,8 @@ namespace                            Core {
          *
          * @return bool             Retourne TRUE si le fichier de langue a bien été chargé, sinon FALSE.
          */
-        public static function load() {
+        public static function      load() {
+            Debug::trace();
             if (!file_exists(ROOT . '/i18n/' . Conf::get('lang') . '.json'))
                 return false;
 
@@ -43,12 +41,13 @@ namespace                            Core {
         /**
          * Traduit une chaîne de caractères.
          *
-         * @param string $key   Chaîne à traduire
-         * @param array $params Paramètres
+         * @param string $key       Chaîne à traduire
+         * @param array $params     Paramètres
          *
-         * @return string               Chaîne traduite
+         * @return string           Chaîne traduite
          */
-        public static function get($key, $params = []) {
+        public static function      get($key, $params = []) {
+            Debug::trace();
             if (!isset(self::$__translations[$key])) {
                 self::$__translations[$key] = $key;
                 file_put_contents(ROOT . '/i18n/' . Conf::get('lang') . '.json', json_encode(self::$__translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT));
@@ -60,19 +59,20 @@ namespace                            Core {
         /**
          * Initialise le système de traduction
          */
-        public static function init() {
+        public static function      init() {
+            Debug::trace();
             self::$__acceptedLanguages = Conf::get('i18n.languages');
             self::$__defaultLanguage = Conf::get('i18n.default');
 
             if (Auth::uid()) {
                 Conf::set('lang', (isset(Auth::user()['lang']) && in_array(Auth::user()['lang'], self::$__acceptedLanguages)) ? Auth::user()['lang'] : self::$__defaultLanguage);
             } else {
-                if (isset($_SESSION[self::$__sessionKey]))
-                    Conf::set('lang', $_SESSION[self::$__sessionKey]);
+                if (Session::get('lang', false))
+                    Conf::set('lang', Session::get('lang', false));
                 else {
                     if (isset($_GET['lang']) && in_array($_GET['lang'], self::$__acceptedLanguages)) {
                         Conf::set('lang', $_GET['lang']);
-                        $_SESSION[self::$__sessionKey] = $_GET['lang'];
+                        Session::set('lang', $_GET['lang']);
                     } else {
                         // Based on browser
                         $languages = explode(',', isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']) : '');
@@ -92,10 +92,11 @@ namespace                            Core {
          * @param bool $reloadFile Détermine si les langues doivent être rechargées en live
          */
         public static function setLang($lang, $reloadFile = false) {
+            Debug::trace();
             if (!in_array($lang, self::$__acceptedLanguages))
                 $lang = self::$__defaultLanguage;
             Conf::set('lang', $lang);
-            Session::set(self::$__sessionKey, $lang);
+            Session::set('lang', $lang);
             if ($reloadFile)
                 self::load();
         }

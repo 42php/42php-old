@@ -29,6 +29,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return bool|Factory
      */
     public static function      getInstance() {
+        \Core\Debug::trace();
         if (is_null(self::$singleton)) {
             try {
                 $pdo = new \PDO(
@@ -63,6 +64,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * Déconnecte PDO
      */
     public function             close() {
+        \Core\Debug::trace();
         $this->pdo = null;
         self::$singleton = null;
     }
@@ -74,6 +76,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return Collection
      */
     public function             __get($k) {
+        \Core\Debug::trace();
         return new Collection($k, $this, $this->pdo);
     }
 
@@ -84,6 +87,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return string           Valeur filtrée
      */
     public function             quote($value) {
+        \Core\Debug::trace();
         try {
             return $this->pdo->quote($value);
         } catch (\PDOException $e) {
@@ -100,6 +104,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return int              Nombre de résultats affectés
      */
     public function             exec($query) {
+        \Core\Debug::trace();
         try {
             return $this->pdo->exec($query);
         } catch (\PDOException $e) {
@@ -116,6 +121,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return array|bool       L'ensemble des résultats ou FALSE
      */
     public function             query($query) {
+        \Core\Debug::trace();
         try {
             $ret = $this->pdo->query($query);
             if (!$ret)
@@ -135,6 +141,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return mixed            Le résultat sous la forme d'un tableau ou FALSE
      */
     public function             get($query) {
+        \Core\Debug::trace();
         try {
             $ret = $this->pdo->query($query);
             if (!$ret)
@@ -153,6 +160,7 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return string           Dernier identifiant inséré
      */
     public function             lastId() {
+        \Core\Debug::trace();
         try {
             return $this->pdo->lastInsertId();
         } catch (\PDOException $e) {

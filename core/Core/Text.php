@@ -24,6 +24,7 @@ class 						Text {
      * @return string               Chaîne générée
      */
     public static function 	random($length = 8, $charset = 'azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890') {
+        Debug::trace();
         $text = '';
         while ($length-- > 0)
             $text .= $charset[rand(0, strlen($charset) - 1)];
@@ -38,6 +39,7 @@ class 						Text {
      * @return string               Distance formatée
      */
     public static function 	beautifulDistance($distance){
+        Debug::trace();
         if ($distance < 1000)
             return (intval($distance / 10) * 10) . 'm';
         return str_replace('.', ',', sprintf('%.1f', $distance / 1000)).'km';
@@ -53,6 +55,7 @@ class 						Text {
      * @return string               Chaîne nettoyée
      */
     public static function 	slug($str, $replace = array(), $delimiter = '-') {
+        Debug::trace();
         setlocale(LC_ALL, 'en_US.UTF8');
         if (!empty($replace)) {
             $str = str_replace((array)$replace, ' ', $str);
@@ -74,6 +77,7 @@ class 						Text {
      * @return string           Chaîne de caractère en latin
      */
     public static function 	ru2lat($str) {
+        Debug::trace();
         $tr = array(
             "А"=>"a", "Б"=>"b", "В"=>"v", "Г"=>"g", "Д"=>"d",
             "Е"=>"e", "Ё"=>"yo", "Ж"=>"zh", "З"=>"z", "И"=>"i",
@@ -103,6 +107,7 @@ class 						Text {
      * @return string               L'extension
      */
     public static function  getExtension($filename, $uppercase = false) {
+        Debug::trace();
         $ext = explode('.', $filename);
         $ext = $ext[sizeof($ext) - 1];
         if ($uppercase)

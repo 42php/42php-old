@@ -24,6 +24,7 @@ class 						IP {
      * @return string       IP du client
      */
     public static function 	get() {
+        Debug::trace();
         $client  = @$_SERVER['HTTP_CLIENT_IP'];
         $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
         $remote  = $_SERVER['REMOTE_ADDR'];
