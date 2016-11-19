@@ -1,18 +1,18 @@
 <?php
 
 $tables = [
-    'Sessions' => [
+    'sessions' => [
         'id' => 'auto_increment',
         'data' => 'text',
-        'expire' => '!int(11)'
+        'expire' => '!datetime'
     ],
-    'Applications' => [
+    'applications' => [
         'id' => 'auto_increment',
         'key' => 'text',
         'secret' => 'text',
         'device' => 'text'
     ],
-    'User' => [
+    'users' => [
         'id' => 'auto_increment',
         'email' => 'text',
         'password' => 'text',
@@ -26,7 +26,7 @@ $tables = [
         'photo' => 'blob',
         'email_verified' => 'tinyint(1)'
     ],
-    'ProviderAccounts' => [
+    'provideraccounts' => [
         'id' => 'auto_increment',
         'userid' => 'int',
         'provider' => 'text',
