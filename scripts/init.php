@@ -47,6 +47,9 @@ if (\Core\Conf::get('debug', false)) {
     error_reporting(0);
 }
 
+// Initialisation de la session
+\Core\Session::init();
+
 // Initialisation du multilangue
 \Core\i18n::init();
 
