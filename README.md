@@ -5,6 +5,9 @@
 ## Install
 
 - Clone the repository.
+```bash
+git clone --recursive https://github.com/42php/42php.git
+```
 - Configure database in the `config/global.json`.
 - If you use SQL databases, you can install base tables :
 ```bash
