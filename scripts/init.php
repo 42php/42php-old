@@ -34,6 +34,8 @@ foreach ($confToLoad as $file)
     include $file;
 \Core\Conf::load(ROOT.'/config/global.json');
 
+\Core\Debug::$TRACE_ENABLED = \Core\Conf::get('debug') && isset($_GET['trace']);
+
 if (\Core\Conf::get('debug'))
     \Core\Conf::set('inspector.startTime', microtime(true));
 

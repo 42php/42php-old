@@ -18,11 +18,12 @@ namespace                       Core;
  * @package Core
  */
 class                           Debug {
+    public static               $TRACE_ENABLED = false;
     /**
      * Affiche l'exécution de la fonction courante.
      */
     public static function      trace() {
-        if (!Conf::get('debug', false) || !isset($_GET['trace']))
+        if (!self::$TRACE_ENABLED)
             return;
         $trace = debug_backtrace();
         if (!isset($trace[1]))
@@ -34,10 +35,25 @@ class                           Debug {
                 $className[] = $trace[$type];
         if (sizeof($className))
             $className[] = '(';
-        if (isset($trace['args']) && sizeof($trace['args']))
-            $className[] = '"' . implode('", "', $trace['args']) . '"';
+        if (isset($trace['args']) && sizeof($trace['args'])) {
+            $args = [];
+            foreach ($trace['args'] as $arg) {
+                switch (gettype($arg)) {
+                    case 'array':
+                        $args[] = 'array ' . json_encode($arg);
+                        break;
+                    case 'object':
+                        $args[] = get_class($arg) . ' ' . json_encode($arg);
+                        break;
+                    default:
+                        $args[] = '"' . $arg . '"';
+                        break;
+                }
+            }
+            $className[] = implode(', ', $args);
+        }
         if (sizeof($className))
             $className[] = ')';
-        echo '[' . date('H:i:s.') . intval(floatval(microtime()) * 10000) . '] ' . implode('', $className) . ' called in ' . $trace['file'] . ' at line ' . $trace['line'] . "\n";
+        echo '[' . date('H:i:s.') . intval(floatval(microtime()) * 10000) . '] ' . implode('', $className) . ' called in ' . $trace['file'] . ' at line ' . $trace['line'] . "<br />\n";
     }
 }

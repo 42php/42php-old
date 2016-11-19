@@ -21,5 +21,5 @@ if (!$route) {
     ];
 }
 
-if (\Core\Conf::get('debug', false) && isset($_GET['trace']))
+if (!\Core\Debug::$TRACE_ENABLED)
     echo \Core\Controller::run($route['controller'], $route['params']);
