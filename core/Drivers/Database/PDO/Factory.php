@@ -39,6 +39,7 @@ class                           Factory implements \Drivers\Database\Factory {
                 $pdo->exec("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
                 self::$singleton = new self($pdo);
             } catch (\PDOException $e) {
+                echo "PDO: " . $e->getMessage() . "\n";
                 return false;
             }
         }
@@ -83,7 +84,13 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return string           Valeur filtrée
      */
     public function             quote($value) {
-        return $this->pdo->quote($value);
+        try {
+            return $this->pdo->quote($value);
+        } catch (\PDOException $e) {
+            if (Conf::get('debug', false))
+                echo "PDO: SQL error: " . $e->getMessage() . "\n";
+            return false;
+        }
     }
 
     /**
@@ -93,7 +100,13 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return int              Nombre de résultats affectés
      */
     public function             exec($query) {
-        return $this->pdo->exec($query);
+        try {
+            return $this->pdo->exec($query);
+        } catch (\PDOException $e) {
+            if (Conf::get('debug', false))
+                echo "PDO: SQL error: " . $e->getMessage() . "\n";
+            return false;
+        }
     }
 
     /**
@@ -103,10 +116,16 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return array|bool       L'ensemble des résultats ou FALSE
      */
     public function             query($query) {
-        $ret = $this->pdo->query($query);
-        if (!$ret)
+        try {
+            $ret = $this->pdo->query($query);
+            if (!$ret)
+                return false;
+            return $ret->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            if (Conf::get('debug', false))
+                echo "PDO: SQL error: " . $e->getMessage() . "\n";
             return false;
-        return $ret->fetchAll(\PDO::FETCH_ASSOC);
+        }
     }
 
     /**
@@ -116,10 +135,16 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return mixed            Le résultat sous la forme d'un tableau ou FALSE
      */
     public function             get($query) {
-        $ret = $this->pdo->query($query);
-        if (!$ret)
+        try {
+            $ret = $this->pdo->query($query);
+            if (!$ret)
+                return false;
+            return $ret->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            if (Conf::get('debug', false))
+                echo "PDO: SQL error: " . $e->getMessage() . "\n";
             return false;
-        return $ret->fetch(\PDO::FETCH_ASSOC);
+        }
     }
 
     /**
@@ -128,6 +153,12 @@ class                           Factory implements \Drivers\Database\Factory {
      * @return string           Dernier identifiant inséré
      */
     public function             lastId() {
-        return $this->pdo->lastInsertId();
+        try {
+            return $this->pdo->lastInsertId();
+        } catch (\PDOException $e) {
+            if (Conf::get('debug', false))
+                echo "PDO: SQL error: " . $e->getMessage() . "\n";
+            return false;
+        }
     }
 }

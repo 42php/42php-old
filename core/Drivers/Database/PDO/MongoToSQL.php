@@ -251,10 +251,11 @@ class                               MongoToSQL {
      * @return array|string|object  Chaîne traitée
      */
     public static function      fromDb($data) {
-        if (substr($data, 0, 20) == '42php.db.json.array:')
-            return \Core\JSON::toArray(substr($data, 20));
+        if (substr($data, 0, 20) == '42php.db.json.array:') {
+            return json_decode(substr($data, 20), true);
+        }
         if (substr($data, 0, 21) == '42php.db.json.object:')
-            return \Core\JSON::toObject(substr($data, 21));
+            return json_decode(substr($data, 21), false);
         return $data;
     }
 
