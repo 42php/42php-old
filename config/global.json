@@ -7,7 +7,7 @@
         ],
         "default": "fr",
         "source": {
-            "prefer": "route"
+            "prefer": "browser"
         }
     },
     "cookie": {
