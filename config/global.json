@@ -58,12 +58,14 @@
             "driver": "System"
         }
     ],
-    "social": {
-        "fb": {
-            "driver": "Facebook",
-            "config": {
-                "key": "testtest",
-                "secret": "tsettset"
+    "auth": {
+        "social": {
+            "fb": {
+                "driver": "Facebook",
+                "config": {
+                    "key": "testtest",
+                    "secret": "tsettset"
+                }
             }
         }
     }
