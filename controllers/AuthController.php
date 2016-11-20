@@ -5,10 +5,13 @@
  */
 class                   AuthController extends \Core\Controller {
     public function     login() {
-        if (isset($_POST['email'], $_POST['password'])) {
+        return \Core\Plugin::render('Auth', \Core\Conf::get('auth', []));
+    }
 
-        }
-
-
+    public function     logout() {
+        $redirect = '/';
+        if (isset($_GET['redirect']))
+            $redirect = $_GET['redirect'];
+        \Core\Auth::logout($redirect);
     }
 }
