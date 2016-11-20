@@ -1,4 +1,11 @@
 {
+  "root": {
+    "controller": "StaticController@redirectToLang",
+    "routes": {
+      "fr": "/",
+      "en": "/"
+    }
+  },
   "home": {
     "controller": "StaticController@home",
     "routes": {
