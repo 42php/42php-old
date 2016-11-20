@@ -1,3 +1,6 @@
 [submodule "core/Plugins/Admin"]
 	path = core/Plugins/Admin
 	url = https://github.com/42php/plugin-admin
+[submodule "core/Plugins/MaterialAuth"]
+	path = core/Plugins/MaterialAuth
+	url = https://github.com/42php/plugin-material-auth
