@@ -111,5 +111,6 @@ class                               Bundle {
         self::angularAria();
         self::angularMessages();
         Conf::append('page.js', 'https://ajax.googleapis.com/ajax/libs/angular_material/' . self::$angularMaterialVersion . '/angular-material.min.js');
+        Conf::append('page.css', 'https://ajax.googleapis.com/ajax/libs/angular_material/' . self::$angularMaterialVersion . '/angular-material.min.css');
     }
 }
