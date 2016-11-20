@@ -6,6 +6,13 @@
       "en": "/en"
     }
   },
+  "admin": {
+    "controller": "AdminController@display",
+    "routes": {
+      "fr": "/fr/admin",
+      "en": "/en/admin"
+    }
+  },
   "login": {
     "controller": "AuthController@login",
     "routes": {
