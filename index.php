@@ -3,7 +3,7 @@
 /**
  * Call the initialization script
  */
-include '../scripts/init.php';
+include 'scripts/init.php';
 
 $routes = \Core\JSON::toArray(ROOT.'/config/routes.json');
 
