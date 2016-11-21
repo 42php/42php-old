@@ -18,6 +18,20 @@ class                               Bundle {
     public static                   $angularMaterialVersion = '1.1.0';
     public static                   $jQueryVersion = '2.2.4';
 
+    public static function          materialIcons() {
+        if (in_array(__FUNCTION__, self::$loaded))
+            return;
+        self::$loaded[] = __FUNCTION__;
+        Conf::append('page.css', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+    }
+
+    public static function          googleFont($font, $sizes = '300,400,700') {
+        if (in_array(__FUNCTION__ . '::' . $font . ':' . $sizes, self::$loaded))
+            return;
+        self::$loaded[] = __FUNCTION__ . '::' . $font . ':' . $sizes;
+        Conf::append('page.css', 'https://fonts.googleapis.com/icon?family=' . urlencode($font) . ':' . $sizes);
+    }
+
     public static function          jQuery() {
         if (in_array(__FUNCTION__, self::$loaded))
             return;
