@@ -27,6 +27,13 @@
       "en": "/en/admin"
     }
   },
+  "admin_": {
+    "controller": "AdminController@display",
+    "routes": {
+      "fr": "/fr/admin/*",
+      "en": "/en/admin/*"
+    }
+  },
   "login": {
     "controller": "AuthController@login",
     "routes": {
