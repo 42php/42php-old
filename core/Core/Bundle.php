@@ -16,11 +16,21 @@ class                               Bundle {
     public static                   $loaded = [];
     public static                   $angularVersion = '1.5.8';
     public static                   $angularMaterialVersion = '1.1.0';
+    public static                   $jQueryVersion = '2.2.4';
+
+    public static function          jQuery() {
+        if (in_array(__FUNCTION__, self::$loaded))
+            return;
+        self::$loaded[] = __FUNCTION__;
+        Conf::append('page.js', 'https://code.jquery.com/jquery-' . self::$jQueryVersion . '.min.js');
+    }
 
     public static function          angular() {
         if (in_array(__FUNCTION__, self::$loaded))
             return;
         self::$loaded[] = __FUNCTION__;
+
+        self::jQuery();
         Conf::append('page.js', 'https://ajax.googleapis.com/ajax/libs/angularjs/' . self::$angularVersion . '/angular.min.js');
     }
 
