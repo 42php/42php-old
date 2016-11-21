@@ -16,7 +16,7 @@ include ROOT.'/scripts/i18n.php';
 
 if (!$route) {
     $route = [
-        'controller' => 'RootController@redirect',
+        'controller' => 'SystemController@redirect',
         'params' => ''
     ];
 }

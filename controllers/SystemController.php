@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class RootController
+ * Class SystemController
  */
-class                                   RootController extends \Core\Controller {
+class                                   SystemController extends \Core\Controller {
 
     /**
      * Gère les URL inconnues
@@ -28,5 +28,26 @@ class                                   RootController extends \Core\Controller 
         }
         \Core\Http::responseCode(404);
         return '';
+    }
+
+    /**
+     * Redirige sur la home, selon la langue
+     */
+    public function                     redirectToLang() {
+        \Core\Redirect::http(\Core\Argv::createUrl('home'));
+    }
+
+    /**
+     * Affiche la vue d'un plugin
+     */
+    public function                     renderPluginTemplate() {
+        global $argv;
+        $a = array_slice($argv, 2);
+        $plugin = $argv[1];
+        $file = ROOT . '/core/Plugins/' . $plugin . '/' . implode('/', $a) . '.php';
+        if (file_exists($file)) {
+            include $file;
+        }
+        die();
     }
 }

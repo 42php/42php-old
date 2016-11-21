@@ -1,9 +1,16 @@
 {
   "root": {
-    "controller": "StaticController@redirectToLang",
+    "controller": "SystemController@redirectToLang",
     "routes": {
       "fr": "/",
       "en": "/"
+    }
+  },
+  "renderPluginTemplate": {
+    "controller": "SystemController@renderPluginTemplate",
+    "routes": {
+      "fr": "/renderPluginTemplate/*",
+      "en": "/renderPluginTemplate/*"
     }
   },
   "home": {
