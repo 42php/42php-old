@@ -13,6 +13,9 @@
     "cookie": {
         "domain": ""
     },
+    "admin": {
+        "name": "ADMIN"
+    },
     "page": {
         "title": "",
         "description": "",
