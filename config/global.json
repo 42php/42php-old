@@ -16,6 +16,9 @@
     "admin": {
         "name": "ADMIN"
     },
+    "auth": {
+        "allowRegister": true
+    },
     "page": {
         "title": "",
         "description": "",

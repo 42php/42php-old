@@ -11,6 +11,16 @@ class                   AuthController extends \Core\Controller {
         ]);
     }
 
+    public function     register() {
+        $conf = \Core\Conf::get('auth', []);
+        if (!isset($conf['allowRegister']) || !$conf['allowRegister'])
+            \Core\Redirect::http(\Core\Argv::createUrl('login') . (isset($_GET['redirect']) ? '?redirect=' . urlencode($_GET['redirect']) : ''));
+        return \Core\Plugin::render('MaterialAuth', [
+            'view' => 'register',
+            'conf' => $conf
+        ]);
+    }
+
     public function     resetPassword() {
         return \Core\Plugin::render('MaterialAuth', [
             'view' => 'password-forgot',

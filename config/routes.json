@@ -41,6 +41,13 @@
       "en": "/en/login"
     }
   },
+  "register": {
+    "controller": "AuthController@register",
+    "routes": {
+      "fr": "/fr/inscription",
+      "en": "/en/register"
+    }
+  },
   "logout": {
     "controller": "AuthController@logout",
     "routes": {
