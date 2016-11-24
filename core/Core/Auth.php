@@ -54,6 +54,22 @@ class                               Auth {
     }
 
     /**
+     * Si l'utilisateur n'est pas connecté, le redirige vers la page de connexion
+     *
+     * @param bool $asAdmin         Détermine si l'utilisateur doit être connecté avec un compte admin ou pas.
+     * @return bool                 TRUE si il est connecté
+     */
+    public static function          needConnection($asAdmin = false) {
+        if (($asAdmin && !self::admin()) || (!$asAdmin && !self::logged())) {
+            Redirect::http(
+                Argv::createUrl('login') .
+                '?redirect=' . urlencode($_SERVER['REQUEST_URI'])
+            );
+        }
+        return true;
+    }
+
+    /**
      * Retourne une instance de l'User connecté.
      *
      * @return bool|\User  Retourne l'utilisateur si il est connecté, sinon FALSE
