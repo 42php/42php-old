@@ -24,7 +24,7 @@ class                       User {
         'password' => '',
         'firstname' => '',
         'lastname' => '',
-        'genre' => '',
+        'gender' => '',
         'registered' => '0000-00-00 00:00:00',
         'admin' => true,
         'lang' => '',
