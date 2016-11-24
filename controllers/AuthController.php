@@ -5,7 +5,7 @@
  */
 class                   AuthController extends \Core\Controller {
     public function     login() {
-        return \Core\Plugin::render('Auth', \Core\Conf::get('auth', []));
+        return \Core\Plugin::render('MaterialAuth', \Core\Conf::get('auth', []));
     }
 
     public function     logout() {
