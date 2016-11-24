@@ -48,6 +48,13 @@
       "en": "/en/logout"
     }
   },
+  "password-forgot": {
+    "controller": "AuthController@resetPassword",
+    "routes": {
+      "fr": "/fr/mot-de-passe-oublie",
+      "en": "/en/password-forgot"
+    }
+  },
   "api": {
     "controller": "ApiController@process",
     "api": true,

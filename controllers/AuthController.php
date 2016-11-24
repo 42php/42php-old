@@ -11,6 +11,13 @@ class                   AuthController extends \Core\Controller {
         ]);
     }
 
+    public function     resetPassword() {
+        return \Core\Plugin::render('MaterialAuth', [
+            'view' => 'password-forgot',
+            'conf' => \Core\Conf::get('auth', [])
+        ]);
+    }
+
     public function     logout() {
         $redirect = '/';
         if (isset($_GET['redirect']))
