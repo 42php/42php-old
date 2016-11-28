@@ -1,6 +1,7 @@
 {
   "200": "OK.",
   "201": "Ressource créée.",
+  "204": "Ressource supprimée.",
   "400": "Des paramètres sont manquants",
   "401": "Vous devez être connecté pour accéder à cette ressource.",
   "403": "Vous n'avez pas accès à cette ressource.",
