@@ -4,6 +4,7 @@ $tables = [
     'sessions' => [
         'id' => 'auto_increment',
         'data' => 'text',
+        'token' => 'varchar(60)',
         'expire' => '!datetime'
     ],
     'applications' => [

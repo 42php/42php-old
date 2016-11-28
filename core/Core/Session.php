@@ -71,7 +71,7 @@ class 							Session {
          */
         if (self::$id !== false) {
             $d = Db::getInstance()->sessions->findOne([
-                'id' => Db::id(self::$id)
+                'token' => Db::id(self::$id)
             ]);
             if (!$d) {
                 self::$id = false;
@@ -95,8 +95,9 @@ class 							Session {
     public static function      create() {
         Debug::trace();
         if (self::$id === false) {
-            $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$__expire))];
-            self::$id = Db::getInstance()->sessions->insert($d);
+            $d = ['data' => self::$__data, 'token' => Text::random(60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_'), 'expire' => Db::date(strtotime(self::$__expire))];
+            Db::getInstance()->sessions->insert($d);
+            self::$id = $d['token'];
             Session::set('__apiSpecial.storeToken', self::$id);
         }
     }
@@ -114,12 +115,14 @@ class 							Session {
          * For the API mode, we can force the session creation with Session::create()
          */
         if (!self::$apiMode && self::$id === false) {
-            self::$id = Db::getInstance()->sessions->insert($d);
+            self::$id = Text::random(60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_');
+            $d['token'] = self::$id;
+            Db::getInstance()->sessions->insert($d);
         } elseif (self::$id !== false) {
             if (isset($d['id']))
                 unset($d['id']);
             Db::getInstance()->sessions->update([
-                'id' => Db::id(self::$id)
+                'token' => self::$id
             ], [
                 '$set' => $d
             ]);
@@ -141,7 +144,7 @@ class 							Session {
         self::$__data = [];
         if (self::$id !== false) {
             Db::getInstance()->sessions->remove([
-                'id' => Db::id(self::$id)
+                'token' => self::$id
             ]);
             self::$id = false;
         }
