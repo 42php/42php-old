@@ -1,9 +1,11 @@
 {
   "200": "OK.",
+  "201": "Ressource créée.",
+  "400": "Des paramètres sont manquants",
+  "401": "Vous devez être connecté pour accéder à cette ressource.",
   "403": "Vous n'avez pas accès à cette ressource.",
   "404": "La ressource demandée n'existe pas.",
-  "409": "Des paramètres sont manquants",
+  "405": "Méthode non implémentée.",
   "421": "La requête n'a pas pu être comprise.",
-  "500": "Erreur serveur.",
-  "501": "Méthode non implémentée."
+  "500": "Erreur serveur."
 }
