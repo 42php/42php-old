@@ -21,11 +21,6 @@ class 							Session {
     use ConfData;
 
     /**
-     * @var bool $apiMode       Utilisation, ou non, du mode API
-     */
-    public static               $apiMode = false;
-
-    /**
      * @var string $expire    Chaîne strtotime() décrivant l'expiration de la session
      */
     public static               $expire = '+30 minutes';
@@ -43,18 +38,16 @@ class 							Session {
         /**
          * If it's cookie mode (for web)
          */
-        if (!self::$apiMode && isset($_COOKIE['token'])) {
+        if (isset($_COOKIE['token'])) {
             self::$id = $_COOKIE['token'];
         }
 
         /**
          * If the session id is transmitted via API (via X-Token header)
          */
-        if (self::$apiMode) {
-            $headers = Http::headers();
-            if (isset($headers['X-Token'])) {
-                self::$id = $headers['X-Token'];
-            }
+        $headers = Http::headers();
+        if (isset($headers['X-Token'])) {
+            self::$id = $headers['X-Token'];
         }
 
         /**
@@ -75,9 +68,7 @@ class 							Session {
             ]);
             if (!$d) {
                 self::$id = false;
-                if (self::$apiMode) {
-                    Session::set('__apiSpecial.deleteToken', true);
-                }
+                Session::set('__api__.deleteToken', true);
             } else {
                 self::$__data = $d['data'];
             }
@@ -98,7 +89,7 @@ class 							Session {
             $d = ['data' => self::$__data, 'token' => Text::random(60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_'), 'expire' => Db::date(strtotime(self::$expire))];
             Db::getInstance()->sessions->insert($d);
             self::$id = $d['token'];
-            Session::set('__apiSpecial.storeToken', self::$id);
+            Session::set('__api__.storeToken', self::$id);
         }
     }
 
@@ -108,17 +99,12 @@ class 							Session {
     public static function      save() {
         Debug::trace();
         $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$expire))];
-        /**
-         * If no active session, create a new session in DB, or update data in DB
-         * If we are in API mode, no session will be created
-         *
-         * For the API mode, we can force the session creation with Session::create()
-         */
-        if (!self::$apiMode && self::$id === false) {
+
+        if (self::$id === false) {
             self::$id = Text::random(60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_');
             $d['token'] = self::$id;
             Db::getInstance()->sessions->insert($d);
-        } elseif (self::$id !== false) {
+        } else {
             if (isset($d['id']))
                 unset($d['id']);
             Db::getInstance()->sessions->update([
@@ -127,13 +113,13 @@ class 							Session {
                 '$set' => $d
             ]);
         }
-        if (!self::$apiMode) {
-            if (!headers_sent()) {
-                setcookie('token', self::$id, strtotime(self::$expire), '/', Conf::get('cookie.domain'), false, false); // The cookie must be accessible by javascript.
-            }
-        } else {
-            Session::set('__apiSpecial.storeToken', self::$id);
+        if (!headers_sent()) {
+            $domain = Conf::get('cookie.domain', false);
+            if (!$domain)
+                $domain = $_SERVER['SERVER_NAME'];
+            setcookie('token', self::$id, strtotime(self::$expire), '/', $domain, false, false); // The cookie must be accessible by javascript.
         }
+        Session::set('__api__.storeToken', self::$id);
     }
 
     /**
