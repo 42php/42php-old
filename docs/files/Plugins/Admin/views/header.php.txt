@@ -1,0 +1,14 @@
+<span class="bttn" ng-click="main.toggleAside()">
+    <i class="material-icons">menu</i>
+</span>
+<div class="logo" ng-if="main.layout.aside.small">
+    <?= strtoupper(substr(\Core\Conf::get('admin.name', 'ADMIN'), 0, 1)) ?>
+</div>
+<div class="title"
+     ng-if="main.layout.aside.small">
+    <?= \Core\Conf::get('admin.name', 'ADMIN') ?>
+</div>
+<span flex></span>
+<span class="bttn">
+    <i class="material-icons">power_settings_new</i>
+</span>

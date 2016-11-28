@@ -28,7 +28,9 @@ interface                   Factory {
     /**
      * Retourne le code HTML généré par le plugin
      *
+     * @param array $params     Paramètres à passer au plugin
+     *
      * @return mixed
      */
-    public function         render();
+    public function         render($params = []);
 }

@@ -1,0 +1,55 @@
+<div id="MaterialAuthApp"
+     ng-app="MaterialAuthApp"
+     layout="column">
+    <div ng-controller="MainController as main"
+         flex="100"
+         layout="row">
+        <main class="no-select" flex-gt-xs="grow" style="background-image: url(<?= $backgroundImage ?>)">
+            <h1 class="md-display-3"><?= _t("Créer un compte") ?></h1>
+            <p class="md-headline">
+                <?= _t("Pour créer un compte, veuillez remplir le formulaire sur la droite de votre écran.") ?>
+            </p>
+        </main>
+        <aside class="md-whiteframe-5dp">
+            <h2 class="md-title"><?= _t("Créer un compte") ?></h2>
+            <md-input-container class="md-block">
+                <label><?= _t("Adresse e-mail") ?></label>
+                <input type="email" required="required" ng-model="main.email" />
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label><?= _t("Mot de passe") ?></label>
+                <input type="password" required="required" ng-model="main.password" />
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label><?= _t("Confirmer le mot de passe") ?></label>
+                <input type="password" required="required" ng-model="main.password2" />
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label><?= _t("Civilité") ?></label>
+                <md-select ng-model="main.gender">
+                    <md-option value="male"><?= _t("Monsieur") ?></md-option>
+                    <md-option value="female"><?= _t("Madame") ?></md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label><?= _t("Nom") ?></label>
+                <input type="email" required="required" ng-model="main.lastname" />
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label><?= _t("Prénom") ?></label>
+                <input type="email" required="required" ng-model="main.firstname" />
+            </md-input-container>
+
+            <md-button class="full-width" ng-click="main.register()">
+                <?= _t("Créer mon compte") ?>
+            </md-button>
+
+            <div layout="row">
+                <span flex></span>
+                <span class="md-caption"><?= _t("Vous avez déjà un compte ?") ?> <a href="<?= \Core\Argv::createUrl('login') ?><?= isset($_GET['redirect']) ? '?redirect=' . urlencode($_GET['redirect']) : '' ?>"><?= _t("Se connecter") ?></a></span>
+                <span flex></span>
+            </div>
+
+        </aside>
+    </div>
+</div>

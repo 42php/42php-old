@@ -1,0 +1,36 @@
+<base href="<?= rtrim(str_replace('*', '', $base), '/') ?>/">
+<div id="AdminApp"
+     ng-app="AdminApp"
+     layout="column">
+    <div ng-controller="MainController as main"
+         flex="100"
+         layout="row"
+         ng-class="main.theme">
+        <aside layout="column"
+               ng-class="{small: main.layout.aside.small}">
+            <header layout="row"
+                    layout-align="start center"
+                    class="md-whiteframe-2dp">
+                <div class="logo">
+                    <?= strtoupper(substr(\Core\Conf::get('admin.name', 'ADMIN'), 0, 1)) ?>
+                </div>
+                <div class="title"
+                     flex="grow">
+                    <?= \Core\Conf::get('admin.name', 'ADMIN') ?>
+                </div>
+            </header>
+            <nav class="scroller" flex="grow">
+                <?= \Core\View::partial('menu', [], __DIR__) ?>
+            </nav>
+        </aside>
+        <main layout="column"
+              flex="grow">
+            <header layout="row"
+                    layout-align="start center"
+                    class="md-whiteframe-2dp">
+                <?= \Core\View::partial('header', [], __DIR__) ?>
+            </header>
+            <ng-view flex="grow" layout="column"></ng-view>
+        </main>
+    </div>
+</div>

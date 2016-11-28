@@ -43,6 +43,7 @@ class                       View {
      */
     private static function renderFile($viewName, $params, $generateHeader, $folder) {
         Debug::trace();
+        $folder = rtrim($folder, '/') . '/';
         if (!self::exists($viewName, $folder))
             return '';
         extract($params);

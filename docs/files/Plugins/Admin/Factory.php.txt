@@ -38,9 +38,25 @@ class                           Factory implements \Plugins\Factory {
     /**
      * Rend la vue de l'administration
      *
+     * @param array $params     Paramètres à passer au plugin
+     *
      * @return mixed
      */
-    public function render() {
-        return \Core\View::render('index', [], __DIR__ . '/views/');
+    public function             render($params = []) {
+        \Core\Auth::needConnection(true);
+
+        \Core\Bundle::googleFont('Roboto', '300,400,500,700,900');
+        \Core\Bundle::materialIcons();
+        \Core\Bundle::angularMaterial();
+        \Core\Bundle::angularRoute();
+        \Core\Conf::append('page.css', '/core/Plugins/Admin/css/main.min.css');
+        \Core\Conf::append('page.css', '/core/Plugins/Admin/css/theme.min.css');
+        \Core\Conf::append('page.js', '/core/Plugins/Admin/js/app.min.js');
+        \Core\Conf::append('page.js', '/core/Plugins/Admin/js/Main.min.js');
+        \Core\Conf::append('page.js', '/core/Plugins/Admin/js/Dashboard.min.js');
+        \Core\Conf::append('page.js', '/core/Plugins/Admin/js/router.min.js');
+        return \Core\View::render('index', [
+            'base' => \Core\Argv::createUrl(\Core\Conf::get('route.name'), \Core\Conf::get('route.params'))
+        ], __DIR__ . '/views/');
     }
 }

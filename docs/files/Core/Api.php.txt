@@ -1,0 +1,261 @@
+<?php
+/**
+ * LICENSE: This source file is subject to version 3.0 of the GPL license
+ * that is available through the world-wide-web at the following URI:
+ * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
+ *
+ * @author      Guillaume Gagnaire <contact@42php.com>
+ * @link        https://www.github.com/42php/42php
+ * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ */
+
+namespace                           Core;
+
+/**
+ * Gère les requêtes à l'API.
+ *
+ * Class Api
+ * @package Core
+ */
+class                               Api {
+    /**
+     * @var array $getMethods       Liste des méthodes GET
+     */
+    private static                  $getMethods = [];
+    /**
+     * @var array $postMethods      Liste des méthodes POST
+     */
+    private static                  $postMethods = [];
+    /**
+     * @var array $putMethods       Liste des méthodes PUT
+     */
+    private static                  $putMethods = [];
+    /**
+     * @var array $patchMethods     Liste des méthodes PATCH
+     */
+    private static                  $patchMethods = [];
+    /**
+     * @var array $deleteMethods    Liste des méthodes DELETE
+     */
+    private static                  $deleteMethods = [];
+    /**
+     * @var int $returnCode         Code de retour de l'API
+     */
+    private static                  $returnCode = 200;
+
+    /**
+     * Lance une erreur liée à l'API.
+     *
+     * @param int $code             Code d'erreur
+     * @param bool|string $message  Message d'erreur
+     * @throws ApiException
+     */
+    public static function          error($code, $message = false) {
+        if ($message === false) {
+            $messages = JSON::toArray(ROOT . '/config/api.errors.json');
+            if (!$messages || !isset($messages[$code]))
+                $message = 'Erreur inconnue.';
+            else
+                $message = $messages[$code];
+        }
+        throw new ApiException($message, $code);
+    }
+
+    /**
+     * Définit le code de retour de l'API
+     *
+     * @param $code
+     */
+    public static function          code($code) {
+        self::$returnCode = $code;
+    }
+
+    /**
+     * Ajoute une méthode GET à l'API
+     *
+     * @param string $path          Chemin d'appel de la méthode
+     * @param callable $callback    Fonction de callback
+     */
+    public static function          get($path, callable $callback) {
+        self::$getMethods[$path] = $callback;
+    }
+
+    /**
+     * Ajoute une méthode POST à l'API
+     *
+     * @param string $path          Chemin d'appel de la méthode
+     * @param callable $callback    Fonction de callback
+     */
+    public static function          post($path, callable $callback) {
+        self::$postMethods[$path] = $callback;
+    }
+
+    /**
+     * Ajoute une méthode PUT à l'API
+     *
+     * @param string $path          Chemin d'appel de la méthode
+     * @param callable $callback    Fonction de callback
+     */
+    public static function          put($path, callable $callback) {
+        self::$putMethods[$path] = $callback;
+    }
+
+    /**
+     * Ajoute une méthode DELETE à l'API
+     *
+     * @param string $path          Chemin d'appel de la méthode
+     * @param callable $callback    Fonction de callback
+     */
+    public static function          delete($path, callable $callback) {
+        self::$deleteMethods[$path] = $callback;
+    }
+
+    /**
+     * Ajoute une méthode PATCH à l'API
+     *
+     * @param string $path          Chemin d'appel de la méthode
+     * @param callable $callback    Fonction de callback
+     */
+    public static function          patch($path, callable $callback) {
+        self::$patchMethods[$path] = $callback;
+    }
+
+    /**
+     * Envoie les données au client API
+     *
+     * @param mixed $data           Données à envoyer
+     * @param bool|int $code        Code de retour
+     */
+    public static function          send($data = [], $code = false) {
+        if ($code !== false)
+            self::code($code);
+        if (!is_array($data))
+            $data = ['data' => $data];
+        ob_end_clean();
+        http_response_code(self::$returnCode);
+        header('Content-Type: application/json');
+        header('X-Token: ' . Session::$id);
+        echo json_encode($data, \JSON_UNESCAPED_UNICODE);
+        Session::save();
+        die();
+    }
+
+    /**
+     * Trouve la route la plus optimisée pour l'URL courante
+     *
+     * @param array $config         Configuration des routes
+     * @param bool $argv            Tableau d'arguments de l'URL courante
+     *
+     * @return array|bool           Retourne la route la plus optimisée, ou FALSE si aucune ne matche.
+     */
+    public static function          route($config, $argv = false) {
+        uksort($config, function($a, $b) {
+            if (strlen($a) == strlen($b))
+                return 0;
+            return (strlen($a) > strlen($b)) ? -1 : 1;
+        });
+        if (!$argv)
+            global $argv;
+        foreach ($config as $path => $value) {
+            $path = Argv::parse($path);
+            $good = true;
+            $cpt = -1;
+            $params = array();
+            while (isset($path[++$cpt])) {
+                if (!isset($argv[$cpt]) || (isset($argv[$cpt]) && $argv[$cpt] != $path[$cpt] && $path[$cpt] != '*'))
+                    $good = false;
+                if (isset($path[$cpt], $argv[$cpt]) && $path[$cpt] == '*')
+                    $params[] = $argv[$cpt];
+            }
+            if ($good) {
+                return [
+                    'path'   => '/'.implode('/', $path),
+                    'offset' => sizeof($path),
+                    'selected' => $value,
+                    'params' => $params
+                ];
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Lance l'API et envoie au client le résultat
+     *
+     * @param int $offset           Nombre de paramètres dans $argv à ignorer
+     */
+    public static function          run($offset = 0) {
+        $headers = Http::headers();
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: OPTIONS, GET, POST, PUT, PATCH, DELETE');
+
+        $lang = i18n::$__defaultLanguage;
+        if (isset($headers['X-Lang']) && in_array($headers['X-Lang'], i18n::$__acceptedLanguages))
+            $lang = $headers['X-Lang'];
+        i18n::setLang($lang);
+
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                $_REQUEST = $_GET;
+                break;
+            case 'POST':
+            case 'PUT':
+            case 'PATCH':
+                $json = file_get_contents('php://input');
+                $params = json_decode($json, true);
+                if (is_null($params))
+                    self::error(421);
+                $_REQUEST = $params;
+                break;
+            case 'DELETE':
+                $_REQUEST = [];
+                break;
+            default:
+                self::error(405);
+                break;
+        }
+
+        try {
+            global $argv;
+            $ret = self::local($_SERVER['REQUEST_METHOD'], '/' . implode('/', array_slice($argv, $offset)), $_REQUEST);
+            self::send($ret);
+        } catch (ApiException $e) {
+            self::send([
+                'error' => $e->getCode(),
+                'error_message' => $e->getMessage()
+            ], $e->getCode());
+        }
+    }
+
+    /**
+     * Exécute l'API en local
+     *
+     * @param string $method        Méthode d'appel
+     * @param string $path          Chemin de la ressource
+     * @param array $data           Paramètres
+     *
+     * @return mixed                Le retour de l'API
+     */
+    public static function          local($method, $path, $data = []) {
+        $oldRequest = $_REQUEST;
+        $_REQUEST = $data;
+        $argv = Argv::parse($path);
+        $var = strtolower($method) . 'Methods';
+        $functions = self::$$var;
+        $selected = self::route($functions, $argv);
+
+        if ($selected) {
+            $newArgv = $selected['params'];
+            foreach ($argv as $i => $value) {
+                if ($i >= $selected['offset']) {
+                    $newArgv[] = $value;
+                }
+            }
+            $result = call_user_func_array($selected['selected'], $newArgv);
+            $_REQUEST = $oldRequest;
+            return $result;
+        }
+        self::error(405);
+        return false;
+    }
+}

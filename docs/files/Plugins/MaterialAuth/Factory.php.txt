@@ -1,0 +1,63 @@
+<?php
+/**
+ * LICENSE: This source file is subject to version 3.0 of the GPL license
+ * that is available through the world-wide-web at the following URI:
+ * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
+ *
+ * @author      Guillaume Gagnaire <contact@42php.com>
+ * @link        https://www.github.com/42php/42php
+ * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ */
+
+namespace                       Plugins\MaterialAuth;
+
+/**
+ * Gère le panneau d'administration
+ *
+ * Class Factory
+ * @package Plugins\Admin
+ */
+class                           Factory implements \Plugins\Factory {
+    /**
+     * Stocke l'instance singleton
+     *
+     * @var null|Factory
+     */
+    private static              $singleton = null;
+    /**
+     * Retourne l'instance singleton du panneau d'administration
+     *
+     * @return Factory          Une instance
+     */
+    public static function      getInstance() {
+        if (is_null(self::$singleton))
+            self::$singleton = new self();
+        return self::$singleton;
+    }
+
+    /**
+     * Rend la vue de l'administration
+     *
+     * @param array $params     Paramètres à passer au plugin
+     *
+     * @return mixed
+     */
+    public function             render($params = []) {
+        $images = \Core\Dir::read(__DIR__ . '/images/', '*.jpg');
+
+        $image = $images[array_rand($images)];
+        $image = str_replace(ROOT, '', $image);
+
+        \Core\Bundle::googleFont('Roboto', '300,400,500,700,900');
+        \Core\Bundle::materialIcons();
+        \Core\Bundle::angularMaterial();
+        \Core\Conf::append('page.css', '/core/Plugins/MaterialAuth/css/main.min.css');
+        \Core\Conf::append('page.css', '/core/Plugins/MaterialAuth/css/theme.min.css');
+        \Core\Conf::append('page.js', '/core/Plugins/MaterialAuth/js/app.min.js');
+        \Core\Conf::append('page.js', '/core/Plugins/MaterialAuth/js/Main.min.js');
+        return \Core\View::render($params['view'], [
+            'conf' => $params['conf'],
+            'backgroundImage' => $image
+        ], __DIR__ . '/views/');
+    }
+}

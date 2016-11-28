@@ -19,7 +19,7 @@ namespace                            Core {
         public static $__translations = [];
 
         /** @var string $__defaultLanguage Langue par défaut */
-        public static $__defaultLanguage = 'fr';
+        public static $__defaultLanguage = 'fr-FR';
 
         /** @var array $__acceptedLanguages Langues disponibles */
         public static $__acceptedLanguages = [];
@@ -78,8 +78,8 @@ namespace                            Core {
                         Conf::set('lang', $_GET['lang']);
                         Session::set('lang', $_GET['lang']);
                     } else {
-                        $languages = explode(',', isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']) : '');
-                        if (in_array($languages[0], self::$__acceptedLanguages))
+                        $languages = explode(',', isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : self::$__defaultLanguage);
+                        if (isset($languages[0]) && in_array($languages[0], self::$__acceptedLanguages))
                             Conf::set('lang', $languages[0]);
                         else
                             Conf::set('lang', self::$__defaultLanguage);

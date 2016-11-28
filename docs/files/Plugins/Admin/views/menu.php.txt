@@ -1,0 +1,21 @@
+<script type="text/ng-template" id="AdminMenuLink">
+    <span layout="row" layout-align="start center" ng-class="{opened: current.opened}">
+        <span class="icon" ng-if="current.icon"><i class="material-icons">{{ current.icon }}</i></span>
+        <span class="name" flex="grow" ng-class="{'no-icon': !current.icon}">{{ current.title }}</span>
+        <span class="more" ng-if="current.subs"><i class="material-icons">{{ current.opened ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</i></span>
+    </span>
+    <ul ng-if="current.subs" ng-class="{opened: current.opened}">
+        <li layout="column"
+            ng-repeat="item in current.subs"
+            ng-include="'AdminMenuLink'"
+            ng-click="main.handleMenuClick(current, $event)"
+            ng-init="current = item; current.opened = false;"></li>
+    </ul>
+</script>
+<ul>
+    <li layout="column"
+        ng-repeat="item in main.menu"
+        ng-include="'AdminMenuLink'"
+        ng-click="main.handleMenuClick(current, $event)"
+        ng-init="current = item; current.opened = false;"></li>
+</ul>
