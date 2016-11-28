@@ -26,9 +26,9 @@ class 							Session {
     public static               $apiMode = false;
 
     /**
-     * @var string $__expire    Chaîne strtotime() décrivant l'expiration de la session
+     * @var string $expire    Chaîne strtotime() décrivant l'expiration de la session
      */
-    public static               $__expire = '+30 minutes';
+    public static               $expire = '+30 minutes';
 
     /**
      * @var mixed               ID de session (false si aucun ID, sinon ID du document MongoDB)
@@ -95,7 +95,7 @@ class 							Session {
     public static function      create() {
         Debug::trace();
         if (self::$id === false) {
-            $d = ['data' => self::$__data, 'token' => Text::random(60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_'), 'expire' => Db::date(strtotime(self::$__expire))];
+            $d = ['data' => self::$__data, 'token' => Text::random(60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_'), 'expire' => Db::date(strtotime(self::$expire))];
             Db::getInstance()->sessions->insert($d);
             self::$id = $d['token'];
             Session::set('__apiSpecial.storeToken', self::$id);
@@ -107,7 +107,7 @@ class 							Session {
      */
     public static function      save() {
         Debug::trace();
-        $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$__expire))];
+        $d = ['data' => self::$__data, 'expire' => Db::date(strtotime(self::$expire))];
         /**
          * If no active session, create a new session in DB, or update data in DB
          * If we are in API mode, no session will be created
@@ -129,7 +129,7 @@ class 							Session {
         }
         if (!self::$apiMode) {
             if (!headers_sent()) {
-                setcookie('token', self::$id, strtotime(self::$__expire), '/', Conf::get('cookie.domain'), false, false); // The cookie must be accessible by javascript.
+                setcookie('token', self::$id, strtotime(self::$expire), '/', Conf::get('cookie.domain'), false, false); // The cookie must be accessible by javascript.
             }
         } else {
             Session::set('__apiSpecial.storeToken', self::$id);
