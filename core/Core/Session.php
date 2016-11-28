@@ -28,7 +28,7 @@ class 							Session {
     /**
      * @var string $__expire    Chaîne strtotime() décrivant l'expiration de la session
      */
-    public static               $__expire = '+30 hours';
+    public static               $__expire = '+30 minutes';
 
     /**
      * @var mixed               ID de session (false si aucun ID, sinon ID du document MongoDB)
