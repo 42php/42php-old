@@ -68,7 +68,6 @@ class 							Session {
             ]);
             if (!$d) {
                 self::$id = false;
-                Session::set('__api__.deleteToken', true);
             } else {
                 self::$__data = $d['data'];
             }
@@ -89,7 +88,6 @@ class 							Session {
             $d = ['data' => self::$__data, 'token' => Text::random(60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_'), 'expire' => Db::date(strtotime(self::$expire))];
             Db::getInstance()->sessions->insert($d);
             self::$id = $d['token'];
-            Session::set('__api__.storeToken', self::$id);
         }
     }
 
@@ -119,7 +117,6 @@ class 							Session {
                 $domain = $_SERVER['SERVER_NAME'];
             setcookie('token', self::$id, strtotime(self::$expire), '/', $domain, false, false); // The cookie must be accessible by javascript.
         }
-        Session::set('__api__.storeToken', self::$id);
     }
 
     /**
