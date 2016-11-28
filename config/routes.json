@@ -2,72 +2,72 @@
   "root": {
     "controller": "SystemController@redirectToLang",
     "routes": {
-      "fr": "/",
-      "en": "/"
+      "fr-FR": "/",
+      "en-US": "/"
     }
   },
   "renderPluginTemplate": {
     "controller": "SystemController@renderPluginTemplate",
     "routes": {
-      "fr": "/renderPluginTemplate/*",
-      "en": "/renderPluginTemplate/*"
+      "fr-FR": "/renderPluginTemplate/*",
+      "en-US": "/renderPluginTemplate/*"
     }
   },
   "home": {
     "controller": "StaticController@home",
     "routes": {
-      "fr": "/fr",
-      "en": "/en"
+      "fr-FR": "/fr",
+      "en-US": "/en"
     }
   },
   "admin": {
     "controller": "AdminController@display",
     "routes": {
-      "fr": "/fr/admin",
-      "en": "/en/admin"
+      "fr-FR": "/fr/admin",
+      "en-US": "/en/admin"
     }
   },
   "admin_": {
     "controller": "AdminController@display",
     "routes": {
-      "fr": "/fr/admin/*",
-      "en": "/en/admin/*"
+      "fr-FR": "/fr/admin/*",
+      "en-US": "/en/admin/*"
     }
   },
   "login": {
     "controller": "AuthController@login",
     "routes": {
-      "fr": "/fr/connexion",
-      "en": "/en/login"
+      "fr-FR": "/fr/connexion",
+      "en-US": "/en/login"
     }
   },
   "register": {
     "controller": "AuthController@register",
     "routes": {
-      "fr": "/fr/inscription",
-      "en": "/en/register"
+      "fr-FR": "/fr/inscription",
+      "en-US": "/en/register"
     }
   },
   "logout": {
     "controller": "AuthController@logout",
     "routes": {
-      "fr": "/fr/deconnexion",
-      "en": "/en/logout"
+      "fr-FR": "/fr/deconnexion",
+      "en-US": "/en/logout"
     }
   },
   "password-forgot": {
     "controller": "AuthController@resetPassword",
     "routes": {
-      "fr": "/fr/mot-de-passe-oublie",
-      "en": "/en/password-forgot"
+      "fr-FR": "/fr/mot-de-passe-oublie",
+      "en-US": "/en/password-forgot"
     }
   },
   "api": {
     "controller": "ApiController@process",
     "api": true,
     "routes": {
-      "fr": "/api/*",
-      "en": "/api/*"
+      "fr-FR": "/api/*",
+      "en-US": "/api/*"
     }
   }
 }
