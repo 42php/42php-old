@@ -75,6 +75,9 @@
                 any: callbacks
             };
 
+        if (path.substr(0, 1) != '/')
+            path = '/' + path;
+
         callListeners('loading', client);
 
         var xmlhttp;
@@ -83,7 +86,7 @@
         else
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 
-        xmlhttp.open(method, this.domain + method, true);
+        xmlhttp.open(method, basePath + path, true);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.setRequestHeader("Accept", "application/json");
         xmlhttp.setRequestHeader("X-Token", token);
