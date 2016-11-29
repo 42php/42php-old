@@ -216,6 +216,6 @@ class                               Bundle {
         self::$loaded[] = __FUNCTION__;
 
         Conf::append('page.js', '/js/api/client.min.js');
-        Conf::append('page.bottom', '<script type="text/javascript">window.api.setLang("' . Conf::get('lang') . '")</script>');
+        Conf::append('page.bottom', '<script type="text/javascript">window.api.setLang("' . Conf::get('lang') . '") && window.api.setToken("' . Session::$id . '")</script>');
     }
 }
