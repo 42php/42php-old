@@ -32,6 +32,14 @@ $tables = [
         'userid' => 'int',
         'provider' => 'text',
         'providerid' => 'text'
+    ],
+    'apikeys' => [
+        'id' => 'auto_increment',
+        'name' => 'text',
+        'key' => 'varchar(60)',
+        'created' => 'datetime',
+        'expire' => 'datetime',
+        'owner' => 'int'
     ]
 ];
 
@@ -58,7 +66,7 @@ foreach ($tables as $tablename => $fields) {
     foreach ($keys as $key)
         $list[] = 'KEY `' . $key . '` (`' . $key . '`)';
 
-    $query = 'CREATE TABLE IF NOT EXISTS `' . $tablename . '` (' . implode(', ', $list) . ') DEFAULT CHARSET=utf8';
+    $query = 'CREATE TABLE IF NOT EXISTS `' . $tablename . '` (' . implode(', ', $list) . ') DEFAULT CHARSET=utf8mb4';
 
     echo "Creating $tablename ... ";
     \Core\Db::getInstance()->exec($query);
