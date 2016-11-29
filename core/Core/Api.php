@@ -195,6 +195,9 @@ class                               Api {
         i18n::setLang($lang);
 
         switch ($_SERVER['REQUEST_METHOD']) {
+            case 'OPTIONS':
+                die();
+                break;
             case 'GET':
                 $_REQUEST = $_GET;
                 break;
