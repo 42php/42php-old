@@ -186,8 +186,34 @@ class                               Api {
      */
     public static function          run($offset = 0) {
         $headers = Http::headers();
+
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: OPTIONS, GET, POST, PUT, PATCH, DELETE');
+
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
+            die();
+
+        $allowed = false;
+        if (!isset($headers['X-App-Key'])) {
+            if (!isset($_SERVER['HTTP_ORIGIN']))
+                $_SERVER['HTTP_ORIGIN'] = $_SERVER['SERVER_NAME'];
+            foreach (Conf::get('domains', [$_SERVER['SERVER_NAME']]) as $domain) {
+                if (fnmatch($domain, $_SERVER['HTTP_ORIGIN'])) {
+                    $allowed = true;
+                    break;
+                }
+            }
+        } else {
+            $app = Db::getInstance()->apikeys->findOne([
+                'key' => $headers['X-App-Key']
+            ]);
+            if ($app) {
+                Conf::set('api.device', $app['name']);
+                $allowed = true;
+            }
+        }
+        if (!$allowed)
+            self::error(401, "Cette application n'est pas autorisée.");
 
         $lang = i18n::$__defaultLanguage;
         if (isset($headers['X-Lang']) && in_array($headers['X-Lang'], i18n::$__acceptedLanguages))
@@ -195,9 +221,6 @@ class                               Api {
         i18n::setLang($lang);
 
         switch ($_SERVER['REQUEST_METHOD']) {
-            case 'OPTIONS':
-                die();
-                break;
             case 'GET':
                 $_REQUEST = $_GET;
                 break;
