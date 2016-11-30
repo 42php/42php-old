@@ -6,6 +6,7 @@ if ($argc > 3) {
     $u->set('firstname', $argv[1]);
     $u->set('lastname', $argv[2]);
     $u->set('email', $argv[3]);
+    $u->set('lang', \Core\Conf::get('lang'));
     $u->setPassword($pwd);
     $u->save();
     echo "Email    : {$argv[3]}\n";
