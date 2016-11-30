@@ -26,7 +26,7 @@ class                       User {
         'lastname' => '',
         'gender' => '',
         'registered' => '0000-00-00 00:00:00',
-        'admin' => true,
+        'admin' => 0,
         'lang' => '',
         'photo' => '',
         'email_verified' => 0,
