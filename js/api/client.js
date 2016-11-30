@@ -119,23 +119,23 @@
     };
 
     client.get = function(path, parameters, callbacks) {
-        client.call('GET', path, parameters, callbacks);
+        return client.call('GET', path, parameters, callbacks);
     };
 
     client.post = function(path, parameters, callbacks) {
-        client.call('POST', path, parameters, callbacks);
+        return client.call('POST', path, parameters, callbacks);
     };
 
     client.put = function(path, parameters, callbacks) {
-        client.call('PUT', path, parameters, callbacks);
+        return client.call('PUT', path, parameters, callbacks);
     };
 
     client.patch = function(path, parameters, callbacks) {
-        client.call('PATCH', path, parameters, callbacks);
+        return client.call('PATCH', path, parameters, callbacks);
     };
 
     client['delete'] = function(path, callbacks) {
-        client.call('DELETE', path, {}, callbacks);
+        return client.call('DELETE', path, {}, callbacks);
     };
 
     client.on = function(type, callback) {
