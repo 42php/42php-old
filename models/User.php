@@ -29,7 +29,7 @@ class                       User {
         'admin' => true,
         'lang' => '',
         'photo' => '',
-        'email_verified' => false,
+        'email_verified' => 0,
         'slug' => ''
     ];
 
