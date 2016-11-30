@@ -48,15 +48,22 @@ class                               Api {
      *
      * @param int $code             Code d'erreur
      * @param bool|string $message  Message d'erreur
+     * @param bool $noException     Permet d'envoyer directement le payload de l'erreur
      * @throws ApiException
      */
-    public static function          error($code, $message = false) {
+    public static function          error($code, $message = false, $noException = false) {
         if ($message === false) {
             $messages = JSON::toArray(ROOT . '/config/api.errors.json');
             if (!$messages || !isset($messages[$code]))
                 $message = 'Erreur inconnue.';
             else
                 $message = $messages[$code];
+        }
+        if ($noException) {
+            self::send([
+                'error' => $code,
+                'error_message' => $message
+            ], $code);
         }
         throw new ApiException($message, $code);
     }
@@ -196,7 +203,8 @@ class                               Api {
         $allowed = false;
         if (!isset($headers['X-App-Key'])) {
             if (!isset($_SERVER['HTTP_ORIGIN']))
-                $_SERVER['HTTP_ORIGIN'] = $_SERVER['SERVER_NAME'];
+                $_SERVER['HTTP_ORIGIN'] = '';
+            $_SERVER['HTTP_ORIGIN'] = str_replace(['https://', 'http://'], '', $_SERVER['HTTP_ORIGIN']);
             foreach (Conf::get('domains', [$_SERVER['SERVER_NAME']]) as $domain) {
                 if (fnmatch($domain, $_SERVER['HTTP_ORIGIN'])) {
                     $allowed = true;
@@ -213,7 +221,7 @@ class                               Api {
             }
         }
         if (!$allowed)
-            self::error(401, "Cette application n'est pas autorisée.");
+            self::error(401, "Cette application n'est pas autorisée.", true);
 
         $lang = i18n::$__defaultLanguage;
         if (isset($headers['X-Lang']) && in_array($headers['X-Lang'], i18n::$__acceptedLanguages))
@@ -230,14 +238,14 @@ class                               Api {
                 $json = file_get_contents('php://input');
                 $params = json_decode($json, true);
                 if (is_null($params))
-                    self::error(421);
+                    self::error(421, false, true);
                 $_REQUEST = $params;
                 break;
             case 'DELETE':
                 $_REQUEST = [];
                 break;
             default:
-                self::error(405);
+                self::error(405, false, true);
                 break;
         }
 
