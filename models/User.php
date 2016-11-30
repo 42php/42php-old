@@ -45,7 +45,7 @@ class                       User {
     /**
      * A la sauvegarde, générer le slug
      */
-    public function         __onSave() {
+    public function         __beforeSave() {
         if ($this->get('slug') == '') {
             $suffix = false;
             $base = \Core\Text::slug($this->getName());
