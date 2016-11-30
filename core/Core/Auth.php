@@ -85,7 +85,7 @@ class                               Auth {
     /**
      * Se déconnecte, puis redirige l'utilisateur
      *
-     * @param string $redirect      URL de redirection
+     * @param string|bool $redirect URL de redirection. Si FALSE, ne redirige pas l'utilisateur.
      */
     public static function          logout($redirect = '/') {
         Debug::trace();
