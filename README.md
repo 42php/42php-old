@@ -8,7 +8,7 @@ As 42php is still under development, and without any production-ready release, u
 
 ## Requirements
 
-- PHP 7
+- PHP 5.6
 
 ## Install
 
