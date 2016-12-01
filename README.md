@@ -6,6 +6,10 @@
 
 As 42php is still under development, and without any production-ready release, use it carefully, and API can change at every moment.
 
+## Requirements
+
+- PHP 7
+
 ## Install
 
 - Clone the repository.
