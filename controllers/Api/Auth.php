@@ -49,6 +49,11 @@ trait                   Api_Auth {
                     $u->set($key, $_REQUEST[$key]);
             $u->save();
 
+            if (isset($_REQUEST['loginOnSuccess']) && $_REQUEST['loginOnSuccess']) {
+                $d = $u->export();
+                Session::set('user', $d);
+            }
+
             Api::code(201);
         });
     }
