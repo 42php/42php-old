@@ -7,6 +7,7 @@
   "403": "Vous n'avez pas accès à cette ressource.",
   "404": "La ressource demandée n'existe pas.",
   "405": "Méthode non implémentée.",
+  "409": "Un conflit avec une autre ressource est survenue.",
   "421": "La requête n'a pas pu être comprise.",
   "500": "Erreur serveur."
 }
