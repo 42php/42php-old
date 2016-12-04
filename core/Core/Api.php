@@ -292,4 +292,20 @@ class                               Api {
         self::error(405);
         return false;
     }
+
+    /**
+     * Permet de tester la présence des champs requis par une méthode API.
+     * Si un des champs n'est pas présent, retourne une erreur API 400.
+     *
+     * @param array|string $fields  La liste des champs à tester (ou un champ unique si
+     *                              une chaîne de caractères est fournie)
+     */
+    public static function          needFields($fields) {
+        if (!is_array($fields))
+            $fields = [$fields];
+        foreach ($fields as $field) {
+            if (!isset($_REQUEST[$field]))
+                self::error(400, _t("Le champ '%s' est requis.", [$field]));
+        }
+    }
 }
