@@ -34,11 +34,19 @@ class                           Plugin {
     }
 
     /**
+     * @var bool|array $pluginList Liste des plugins (cache singleton)
+     */
+    private static              $pluginList = false;
+
+    /**
      * Liste les plugins installés
      *
      * @return array
      */
     public static function      listPlugins() {
+        if (self::$pluginList !== false)
+            return self::$pluginList;
+
         $ret = [];
 
         $dirname = ROOT . '/core/Plugins/';
@@ -51,6 +59,23 @@ class                           Plugin {
             closedir($handle);
         }
 
+        self::$pluginList = $ret;
+
         return $ret;
+    }
+
+    /**
+     * Charge les endpoints Api des plugins
+     */
+    public static function      loadApiEndpoints() {
+        $plugins = self::listPlugins();
+
+        foreach ($plugins as $pluginName) {
+            $className = '\\Plugins\\' . $pluginName . '\\Api';
+            if (!class_exists($className))
+                continue;
+            if (method_exists($className, 'load'))
+                $className::load();
+        }
     }
 }
