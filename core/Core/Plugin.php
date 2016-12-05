@@ -32,4 +32,25 @@ class                           Plugin {
         $o = $className::getInstance();
         return $o->render($params);
     }
+
+    /**
+     * Liste les plugins installés
+     *
+     * @return array
+     */
+    public static function      listPlugins() {
+        $ret = [];
+
+        $dirname = ROOT . '/core/Plugins/';
+        if ($handle = opendir($dirname)) {
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != ".." && is_dir($dirname . $entry)) {
+                    $ret[] = $entry;
+                }
+            }
+            closedir($handle);
+        }
+
+        return $ret;
+    }
 }
