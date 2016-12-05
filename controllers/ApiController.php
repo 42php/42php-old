@@ -1,5 +1,7 @@
 <?php
 
+use                     Core\Plugin;
+
 /**
  * Class ApiController
  */
@@ -13,6 +15,8 @@ class                   ApiController extends \Core\Controller {
                 continue;
             $this->$method();
         }
+
+        Plugin::loadApiEndpoints();
 
         \Core\Api::run(1);
     }
