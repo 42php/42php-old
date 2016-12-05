@@ -48,15 +48,16 @@ class                           Factory implements \Plugins\Factory {
         $image = $images[array_rand($images)];
         $image = str_replace(ROOT, '', $image);
 
+        \Core\Bundle::api();
         \Core\Bundle::googleFont('Roboto', '300,400,500,700,900');
         \Core\Bundle::materialIcons();
         \Core\Bundle::angularMaterial();
         \Core\Conf::append('page.css', '/core/Plugins/MaterialAuth/css/main.min.css');
-        \Core\Conf::append('page.css', '/core/Plugins/MaterialAuth/css/theme.min.css');
         \Core\Conf::append('page.js', '/core/Plugins/MaterialAuth/js/app.min.js');
         \Core\Conf::append('page.js', '/core/Plugins/MaterialAuth/js/Main.min.js');
         return \Core\View::render($params['view'], [
             'conf' => $params['conf'],
+            'redirectUrl' => isset($_GET['redirect']) ? $_GET['redirect'] : '/',
             'backgroundImage' => $image
         ], __DIR__ . '/views/');
     }

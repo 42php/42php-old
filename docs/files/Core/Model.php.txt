@@ -171,6 +171,8 @@ trait                           Model {
      */
     public function             save() {
         Debug::trace();
+        if (method_exists($this, '__beforeSave'))
+            $this->__beforeSave();
         $d = $this->__data;
         if (!is_null($this->id))
             $d['id'] = Db::id($this->id);

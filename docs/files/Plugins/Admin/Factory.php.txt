@@ -11,6 +11,13 @@
 
 namespace                       Plugins\Admin;
 
+use                             Core\Plugin,
+                                Core\Auth,
+                                Core\Bundle,
+                                Core\Argv,
+                                Core\Conf,
+                                Core\View;
+
 /**
  * Gère le panneau d'administration
  *
@@ -36,6 +43,74 @@ class                           Factory implements \Plugins\Factory {
     }
 
     /**
+     * Retourne les éléments du menu de l'administration
+     *
+     * @return array            Eléments du menu
+     */
+    private function            getMenu() {
+        $menu = [];
+        $plugins = Plugin::listPlugins();
+
+        foreach ($plugins as $pluginName) {
+            $className = '\\Plugins\\' . $pluginName . '\\Admin';
+            if (!class_exists($className))
+                continue;
+            if (method_exists($className, 'getMenu'))
+                $menu[] = $className::getMenu();
+        }
+
+        return $menu;
+    }
+
+    /**
+     * Retourne les routes de chaque plugin
+     *
+     * @return array
+     */
+    private function            getRoutes() {
+        $routes = [];
+        $plugins = Plugin::listPlugins();
+
+        foreach ($plugins as $pluginName) {
+            $className = '\\Plugins\\' . $pluginName . '\\Admin';
+            if (!class_exists($className))
+                continue;
+            if (method_exists($className, 'getRoutes')) {
+                $ret = $className::getRoutes();
+                foreach ($ret as $r) {
+                    if (!isset($r['route'], $r['view'], $r['controller']))
+                        continue;
+                    $routes[] = [
+                        'plugin' => $pluginName,
+                        'route' => $r['route'],
+                        'view' => '/' . ltrim($r['view'], '/'),
+                        'controller' => $r['controller'],
+                        'controllerAs' => isset($r['controllerAs']) ? $r['controllerAs'] : 'vm'
+                    ];
+                }
+            }
+        }
+
+        return $routes;
+    }
+
+    /**
+     * Charge les fichiers statiques des plugins
+     */
+    private function            loadPluginStaticFiles() {
+        $routes = [];
+        $plugins = Plugin::listPlugins();
+
+        foreach ($plugins as $pluginName) {
+            $className = '\\Plugins\\' . $pluginName . '\\Admin';
+            if (!class_exists($className))
+                continue;
+            if (method_exists($className, 'loadStaticFiles'))
+                $className::loadStaticFiles();
+        }
+    }
+
+    /**
      * Rend la vue de l'administration
      *
      * @param array $params     Paramètres à passer au plugin
@@ -43,20 +118,25 @@ class                           Factory implements \Plugins\Factory {
      * @return mixed
      */
     public function             render($params = []) {
-        \Core\Auth::needConnection(true);
+        Auth::needConnection(true);
 
-        \Core\Bundle::googleFont('Roboto', '300,400,500,700,900');
-        \Core\Bundle::materialIcons();
-        \Core\Bundle::angularMaterial();
-        \Core\Bundle::angularRoute();
-        \Core\Conf::append('page.css', '/core/Plugins/Admin/css/main.min.css');
-        \Core\Conf::append('page.css', '/core/Plugins/Admin/css/theme.min.css');
-        \Core\Conf::append('page.js', '/core/Plugins/Admin/js/app.min.js');
-        \Core\Conf::append('page.js', '/core/Plugins/Admin/js/Main.min.js');
-        \Core\Conf::append('page.js', '/core/Plugins/Admin/js/Dashboard.min.js');
-        \Core\Conf::append('page.js', '/core/Plugins/Admin/js/router.min.js');
-        return \Core\View::render('index', [
-            'base' => \Core\Argv::createUrl(\Core\Conf::get('route.name'), \Core\Conf::get('route.params'))
+        Bundle::googleFont('Roboto', '300,400,500,700,900');
+        Bundle::materialIcons();
+        Bundle::angularMaterial();
+        Bundle::angularRoute();
+        Conf::append('page.css', '/core/Plugins/Admin/css/main.min.css');
+        Conf::append('page.css', '/core/Plugins/Admin/css/theme.min.css');
+        Conf::append('page.js', '/core/Plugins/Admin/js/app.min.js');
+        Conf::append('page.js', '/core/Plugins/Admin/js/Main.min.js');
+        Conf::append('page.js', '/core/Plugins/Admin/js/Dashboard.min.js');
+
+        $this->loadPluginStaticFiles();
+
+        Conf::append('page.js', '/core/Plugins/Admin/js/router.min.js');
+        return View::render('index', [
+            'base' => Argv::createUrl(Conf::get('route.name'), Conf::get('route.params')),
+            'menu' => $this->getMenu(),
+            'routes' => $this->getRoutes()
         ], __DIR__ . '/views/');
     }
 }

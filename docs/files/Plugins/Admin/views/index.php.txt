@@ -1,3 +1,21 @@
+<script type="text/javascript">
+    var AdminMenuItems = <?= json_encode($menu) ?>;
+
+    function routerConfig($routeProvider, $locationProvider) {
+        $routeProvider
+            <?php foreach ($routes as $route) { ?>
+                .when('<?= $route['route'] ?>', {
+                    templateUrl: '/renderPluginTemplate/<?= $route['plugin'] . $route['view'] ?>',
+                    controller: <?= $route['controller'] ?>,
+                    controllerAs: '<?= $route['controllerAs'] ?>'
+                })
+            <?php } ?>
+            .otherwise({
+                redirectTo: '/dashboard'
+            });
+        $locationProvider.html5Mode(true);
+    }
+</script>
 <base href="<?= rtrim(str_replace('*', '', $base), '/') ?>/">
 <div id="AdminApp"
      ng-app="AdminApp"

@@ -206,4 +206,16 @@ class                               Bundle {
         Conf::append('page.js', 'https://ajax.googleapis.com/ajax/libs/angular_material/' . self::$angularMaterialVersion . '/angular-material.min.js');
         Conf::append('page.css', 'https://ajax.googleapis.com/ajax/libs/angular_material/' . self::$angularMaterialVersion . '/angular-material.min.css');
     }
+
+    /**
+     * Charge les classes nécessaires à l'utilisation de l'API interne
+     */
+    public static function          api() {
+        if (in_array(__FUNCTION__, self::$loaded))
+            return;
+        self::$loaded[] = __FUNCTION__;
+
+        Conf::append('page.js', '/js/api/client.min.js');
+        Conf::append('page.bottom', '<script type="text/javascript">window.api.setLang("' . Conf::get('lang') . '") && window.api.setToken("' . Session::$id . '")</script>');
+    }
 }

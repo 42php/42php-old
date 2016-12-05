@@ -1,0 +1,3 @@
+<div>
+    <h1>Ajouter un album</h1>
+</div>

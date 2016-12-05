@@ -31,6 +31,8 @@ class                               MongoToSQL {
      */
     public static function          select($table, $query = [], $fields = [], $sort = [], $skip = false, $limit = false) {
         \Core\Debug::trace();
+        if (!$fields)
+            $fields = [];
         $sql = 'SELECT ' . (sizeof($fields) ? '`'.implode('`, `', $fields).'`' : '*') . ' FROM `' . $table . '` ';
         if (sizeof($query))
             $sql .= 'WHERE ' . self::where($query) . ' ';

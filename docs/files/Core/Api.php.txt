@@ -48,15 +48,22 @@ class                               Api {
      *
      * @param int $code             Code d'erreur
      * @param bool|string $message  Message d'erreur
+     * @param bool $noException     Permet d'envoyer directement le payload de l'erreur
      * @throws ApiException
      */
-    public static function          error($code, $message = false) {
+    public static function          error($code, $message = false, $noException = false) {
         if ($message === false) {
             $messages = JSON::toArray(ROOT . '/config/api.errors.json');
             if (!$messages || !isset($messages[$code]))
                 $message = 'Erreur inconnue.';
             else
                 $message = $messages[$code];
+        }
+        if ($noException) {
+            self::send([
+                'error' => $code,
+                'error_message' => $message
+            ], $code);
         }
         throw new ApiException($message, $code);
     }
@@ -186,8 +193,35 @@ class                               Api {
      */
     public static function          run($offset = 0) {
         $headers = Http::headers();
+
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: OPTIONS, GET, POST, PUT, PATCH, DELETE');
+
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
+            die();
+
+        $allowed = false;
+        if (!isset($headers['X-App-Key'])) {
+            if (!isset($_SERVER['HTTP_ORIGIN']))
+                $_SERVER['HTTP_ORIGIN'] = '';
+            $_SERVER['HTTP_ORIGIN'] = str_replace(['https://', 'http://'], '', $_SERVER['HTTP_ORIGIN']);
+            foreach (Conf::get('domains', [$_SERVER['SERVER_NAME']]) as $domain) {
+                if (fnmatch($domain, $_SERVER['HTTP_ORIGIN'])) {
+                    $allowed = true;
+                    break;
+                }
+            }
+        } else {
+            $app = Db::getInstance()->apikeys->findOne([
+                'key' => $headers['X-App-Key']
+            ]);
+            if ($app) {
+                Conf::set('api.device', $app['name']);
+                $allowed = true;
+            }
+        }
+        if (!$allowed)
+            self::error(401, "Cette application n'est pas autorisée.", true);
 
         $lang = i18n::$__defaultLanguage;
         if (isset($headers['X-Lang']) && in_array($headers['X-Lang'], i18n::$__acceptedLanguages))
@@ -204,14 +238,14 @@ class                               Api {
                 $json = file_get_contents('php://input');
                 $params = json_decode($json, true);
                 if (is_null($params))
-                    self::error(421);
+                    self::error(421, false, true);
                 $_REQUEST = $params;
                 break;
             case 'DELETE':
                 $_REQUEST = [];
                 break;
             default:
-                self::error(405);
+                self::error(405, false, true);
                 break;
         }
 
@@ -258,4 +292,21 @@ class                               Api {
         self::error(405);
         return false;
     }
+
+    /**
+     * Permet de tester la présence des champs requis par une méthode API.
+     * Si un des champs n'est pas présent, retourne une erreur API 400.
+     *
+     * @param array|string $fields  La liste des champs à tester (ou un champ unique si
+     *                              une chaîne de caractères est fournie)
+     */
+    public static function          needFields($fields) {
+        if (!is_array($fields))
+            $fields = [$fields];
+        foreach ($fields as $field) {
+            if (!isset($_REQUEST[$field]))
+                self::error(400, _t("Le champ '%s' est requis.", [$field]));
+        }
+    }
 }
+

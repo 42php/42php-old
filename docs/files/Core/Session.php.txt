@@ -64,7 +64,7 @@ class 							Session {
          */
         if (self::$id !== false) {
             $d = Db::getInstance()->sessions->findOne([
-                'token' => Db::id(self::$id)
+                'token' => self::$id
             ]);
             if (!$d) {
                 self::$id = false;

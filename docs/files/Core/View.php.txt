@@ -77,7 +77,7 @@ class                       View {
     /**
      * Renders a view file without the HTML full body. Useful to render a view inside another view.
      *
-     * @param $viewName View file name. Can have slashes to delimit folders.
+     * @param string $viewName View file name. Can have slashes to delimit folders.
      * @param array $params Variables to pass to the view.
      * @param string|bool $folder The folder where the view is searched
      *

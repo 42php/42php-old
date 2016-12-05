@@ -9,6 +9,6 @@
     <?= \Core\Conf::get('admin.name', 'ADMIN') ?>
 </div>
 <span flex></span>
-<span class="bttn">
+<a href="<?= \Core\Argv::createUrl('logout') ?>" class="bttn">
     <i class="material-icons">power_settings_new</i>
-</span>
+</a>

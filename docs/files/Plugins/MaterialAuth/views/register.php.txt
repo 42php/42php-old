@@ -1,3 +1,6 @@
+<script type="text/javascript">
+    var redirectUrl = "<?= $redirectUrl ?>";
+</script>
 <div id="MaterialAuthApp"
      ng-app="MaterialAuthApp"
      layout="column">
@@ -12,6 +15,19 @@
         </main>
         <aside class="md-whiteframe-5dp">
             <h2 class="md-title"><?= _t("Créer un compte") ?></h2>
+            <div class="error"
+                 ng-if="main.registerError"
+                 layout="row"
+                 layout-align="start start">
+                <div class="content" flex="grow">
+                    <p>
+                        {{ main.registerError }}
+                    </p>
+                </div>
+                <button ng-click="main.registerError = false">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
             <md-input-container class="md-block">
                 <label><?= _t("Adresse e-mail") ?></label>
                 <input type="email" required="required" ng-model="main.email" />
@@ -33,11 +49,11 @@
             </md-input-container>
             <md-input-container class="md-block">
                 <label><?= _t("Nom") ?></label>
-                <input type="email" required="required" ng-model="main.lastname" />
+                <input type="text" required="required" ng-model="main.lastname" />
             </md-input-container>
             <md-input-container class="md-block">
                 <label><?= _t("Prénom") ?></label>
-                <input type="email" required="required" ng-model="main.firstname" />
+                <input type="text" required="required" ng-model="main.firstname" />
             </md-input-container>
 
             <md-button class="full-width" ng-click="main.register()">
@@ -46,7 +62,7 @@
 
             <div layout="row">
                 <span flex></span>
-                <span class="md-caption"><?= _t("Vous avez déjà un compte ?") ?> <a href="<?= \Core\Argv::createUrl('login') ?><?= isset($_GET['redirect']) ? '?redirect=' . urlencode($_GET['redirect']) : '' ?>"><?= _t("Se connecter") ?></a></span>
+                <span class="md-caption"><?= _t("Vous avez déjà un compte ?") ?> <a href="<?= \Core\Argv::createUrl('login') ?>?redirect=<?= urlencode($redirectUrl) ?>"><?= _t("Se connecter") ?></a></span>
                 <span flex></span>
             </div>
 
