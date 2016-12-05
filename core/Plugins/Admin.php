@@ -12,9 +12,9 @@
 namespace                   Plugins;
 
 /**
- * Gère un plugin
+ * Gère l'administration d'un plugin
  *
- * Interface Factory
+ * Interface Admin
  * @package Plugins
  */
 interface                   Admin {
