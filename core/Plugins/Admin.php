@@ -24,4 +24,16 @@ interface                   Admin {
      * @return array
      */
     public static function  getMenu();
+
+    /**
+     * Retourne la liste des routes
+     *
+     * @return array
+     */
+    public static function  getRoutes();
+
+    /**
+     * Charge les fichiers statiques
+     */
+    public static function  loadStaticFiles();
 }
