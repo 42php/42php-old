@@ -7,3 +7,6 @@
 [submodule "core/Plugins/Gallery"]
 	path = core/Plugins/Gallery
 	url = https://github.com/42php/plugin-gallery
+[submodule "css/42css"]
+	path = css/42css
+	url = https://github.com/42php/42css
