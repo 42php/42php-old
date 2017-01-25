@@ -120,7 +120,10 @@
         xmlhttp.setRequestHeader("Accept", "application/json");
         xmlhttp.setRequestHeader("X-Token", token);
         xmlhttp.setRequestHeader("X-Lang", lang);
-        xmlhttp.send(JSON.stringify(parameters));
+        if (method == 'GET')
+            xmlhttp.send();
+        else
+            xmlhttp.send(JSON.stringify(parameters));
 
         var p = null;
         (function(xmlhttp){
