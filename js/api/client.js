@@ -66,6 +66,26 @@
         token = t;
     };
 
+    var parameterToString = function(key, value) {
+        var p = [],
+            i = 0;
+        if (value.constructor === Array) {
+            for (i = 0; i < value.length; i++) {
+                if (value.hasOwnProperty(i))
+                    p.push(parameterToString(key + '[' + i + ']', value[i]));
+            }
+            return p.join('&');
+        } else if (typeof value == 'object') {
+            for (i in value) {
+                if (value.hasOwnProperty(i))
+                    p.push(parameterToString(key + '[' + i + ']', value[i]));
+            }
+            return p.join('&');
+        } else {
+            return key + '=' + encodeURIComponent(value + '');
+        }
+    };
+
     client.call = function(method, path, parameters, callbacks) {
         if (!parameters)
             parameters = {};
@@ -86,7 +106,16 @@
         else
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 
-        xmlhttp.open(method, basePath + path, true);
+        var url = basePath + path;
+        if (method == 'GET') {
+            var p = [];
+            for (var i in parameters)
+                p.push(parameterToString(i, parameters[i]));
+            if (p.length)
+                url += '?' + p.join('&');
+        }
+
+        xmlhttp.open(method, url, true);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.setRequestHeader("Accept", "application/json");
         xmlhttp.setRequestHeader("X-Token", token);
