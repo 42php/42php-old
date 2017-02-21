@@ -30,3 +30,7 @@ cd scripts; php cli.php install/PDO/tables
 ## Documentation
 
 Documentation is code-generated via PHP Documentor, and available at [docs.42php.com](http://docs.42php.com).
+
+## Kanban
+
+A Kanban is available [here](http://taiga.42php.com/project/42php-42php/)
